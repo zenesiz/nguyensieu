@@ -1183,15 +1183,17 @@ $('#inviteUrl').addEventListener('focus',e=>e.target.select());
 // ---------- dấu chân bạn cũ ----------
 const FP=new Map();let fpLastSave=0,fpLastPos=null;
 const soleTex=tex(64,128,(g,w,h)=>{g.clearRect(0,0,w,h);g.fillStyle='rgba(255,255,255,1)';g.beginPath();g.ellipse(32,40,20,32,0,0,Math.PI*2);g.fill();g.beginPath();g.ellipse(32,100,15,20,0,0,Math.PI*2);g.fill();});
+const beamTex=tex(8,128,(g,w,h)=>{const gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'rgba(255,200,110,0)');gr.addColorStop(1,'rgba(255,200,110,.35)');g.fillStyle=gr;g.fillRect(0,0,w,h);});
 const ringTex=tex(128,128,(g,w,h)=>{const gr=g.createRadialGradient(64,64,20,64,64,64);gr.addColorStop(0,'rgba(255,190,80,0)');gr.addColorStop(0.7,'rgba(255,190,80,.35)');gr.addColorStop(1,'rgba(255,190,80,0)');g.fillStyle=gr;g.fillRect(0,0,w,h);});
 function ago(t){const s=(Date.now()-t)/1000;if(s<120)return'vừa xong';if(s<3600)return Math.round(s/60)+' phút trước';if(s<86400)return Math.round(s/3600)+' giờ trước';return Math.round(s/86400)+' ngày trước';}
 function fpLabel(name,cls,t){const tx=textTex([{t:'👣 '+name+(cls?' · '+cls:''),size:44,color:'#fff3dc',weight:600},{t:'đã đứng đây '+ago(t),size:32,color:'#ffcf7a',weight:400}],{w:640,h:150,stroke:'rgba(0,0,0,.75)'});
-  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthWrite:false}));sp.scale.set(2.6,0.61,1);sp.position.y=1.7;return sp;}
+  const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthWrite:false,depthTest:false}));sp.renderOrder=10;sp.scale.set(2.6,0.61,1);sp.position.y=2.0;return sp;}
 function addFootprint(r){if(!r||r.id===myId)return;const old=FP.get(r.id);if(old){if(old.t===+r.t)return;scene.remove(old.g);}
   const g=new THREE.Group();g.position.set(+r.x,0.03,+r.z);g.rotation.y=+r.ry||0;
-  const m=new THREE.MeshBasicMaterial({map:soleTex,transparent:true,opacity:0.5,depthWrite:false,color:0xfff1d6});
+  const m=new THREE.MeshBasicMaterial({map:soleTex,transparent:true,opacity:0.75,depthWrite:false,color:0xfff1d6});
   for(const [sx,sz] of [[-0.13,0.12],[0.13,-0.18]]){const f=new THREE.Mesh(new THREE.PlaneGeometry(0.22,0.42),m);f.rotation.x=-Math.PI/2;f.position.set(sx,0.01,sz);g.add(f);}
   const ring=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.6),new THREE.MeshBasicMaterial({map:ringTex,transparent:true,depthWrite:false}));ring.rotation.x=-Math.PI/2;g.add(ring);
+  const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.28,0.28,2.2,16,1,true),new THREE.MeshBasicMaterial({map:beamTex,transparent:true,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending}));beam.position.y=1.1;g.add(beam);
   const lab=fpLabel(clean(r.name)||'Bạn cũ',clean(r.cls,24),+r.t);g.add(lab);
   scene.add(g);FP.set(r.id,{g,lab,ring,t:+r.t,name:clean(r.name)||'Bạn cũ',cls:clean(r.cls,24),pos:new V3(+r.x,0,+r.z)});}
 function updateFootprints(t){if(!player)return;for(const [id,f] of FP){const online=remotes.has('sb:'+id);f.g.visible=!online;if(online)continue;
