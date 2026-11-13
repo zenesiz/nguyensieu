@@ -7,6 +7,6 @@ window.NS_CONFIG = {
   //   - video YouTube: { yt: "mã video", title: "Tên bài" }   (mã là phần sau youtu.be/ hoặc watch?v=)
   //   - file mp3 trong thư mục music/: { src: "music/ten-bai.mp3", title: "Tên bài" }
   music: [
-    { yt: "U34PR8_tKJ8", title: "Bài ca Trường Nguyễn Siêu (MV 2016)" },
+    { src: "music/bai-ca-truong-nguyen-sieu.mp3", title: "Bài ca Trường Nguyễn Siêu" },
   ]
 };

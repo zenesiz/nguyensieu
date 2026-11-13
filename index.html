@@ -788,7 +788,7 @@ function initAudio(){try{ac=new (window.AudioContext||window.webkitAudioContext)
 // ---------- background music ----------
 // Danh sách bài: lấy từ config.js (NS_CONFIG.music) nếu có, không thì dùng bài mặc định.
 // Mỗi bài là file mp3 {src,title} hoặc video YouTube {yt:'mã video',title}. YouTube phát trong một khung nhỏ hiển thị trên màn hình (đúng điều khoản YouTube).
-const DEFAULT_MUSIC=[{yt:'U34PR8_tKJ8',title:'Bài ca Trường Nguyễn Siêu (MV 2016)'}];
+const DEFAULT_MUSIC=[{src:'music/bai-ca-truong-nguyen-sieu.mp3',title:'Bài ca Trường Nguyễn Siêu'}];
 const cfgMusic=(window.NS_CONFIG||{}).music;
 const MUSIC=(Array.isArray(cfgMusic)&&cfgMusic.length?cfgMusic:DEFAULT_MUSIC).map(m=>typeof m==='string'?{src:m,title:decodeURIComponent(m.split('/').pop().replace(/\.[^.]+$/,'').replace(/[-_]+/g,' '))}:m).filter(m=>m&&(m.src||m.yt));
 const inArtifact=!!(window.claude&&window.claude.use);
