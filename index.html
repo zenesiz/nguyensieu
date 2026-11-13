@@ -359,6 +359,10 @@ body.touch #topR.mOpen ~ #ytCard{visibility:hidden}
 
 .pbox .ovx{top:8px;right:8px;width:42px;height:42px}
 .phead{min-height:42px;line-height:42px;padding-right:56px}
+
+#c{width:100vw;height:100vh;height:100dvh}
+#mobile,#mobile *{touch-action:none}
+.mb.down{background:rgba(255,176,46,.35);transform:scale(.94)}
 </style>
 <script src="config.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
@@ -482,7 +486,7 @@ try{ await Promise.race([Promise.all([document.fonts.load(`800 40px 'Be Vietnam 
 // ---------- renderer / scene ----------
 const renderer=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-renderer.setSize(innerWidth,innerHeight);
+renderer.setSize(innerWidth,innerHeight,false);
 renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.0;
 renderer.outputColorSpace=THREE.SRGBColorSpace;
@@ -495,7 +499,17 @@ const sun=new THREE.DirectionalLight(0xfff0d2,2.3);
 sun.position.set(32,55,28); sun.castShadow=true; sun.shadow.mapSize.set(2048,2048);
 Object.assign(sun.shadow.camera,{left:-55,right:55,top:55,bottom:-55,near:1,far:170});
 sun.shadow.bias=-0.0004; sun.shadow.normalBias=0.04; scene.add(sun);
-addEventListener('resize',()=>{renderer.setSize(innerWidth,innerHeight);camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();});
+let lastW=0,lastH=0;
+function fitView(){const c=renderer.domElement;const w=Math.round(c.clientWidth||innerWidth),h=Math.round(c.clientHeight||innerHeight);if(!w||!h||(w===lastW&&h===lastH))return;lastW=w;lastH=h;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+for(const ev of ['resize','orientationchange'])addEventListener(ev,()=>{fitView();setTimeout(fitView,250);setTimeout(fitView,700);});
+if(window.visualViewport)visualViewport.addEventListener('resize',()=>{fitView();unzoom();});
+// iPhone: nếu lỡ bị phóng to thì ép trình duyệt thu về 100%
+const vpMeta=document.querySelector('meta[name=viewport]');const VP=vpMeta.content;
+function unzoom(){if(window.visualViewport&&visualViewport.scale>1.01){vpMeta.content=VP+',minimum-scale=1';setTimeout(()=>{vpMeta.content=VP;},300);}}
+// chặn phóng to khi chạm 2 lần / chụm 2 ngón (iOS bỏ qua user-scalable=no)
+document.addEventListener('gesturestart',e=>e.preventDefault(),{passive:false});
+document.addEventListener('gesturechange',e=>e.preventDefault(),{passive:false});
+let lastTouchEnd=0;document.addEventListener('touchend',e=>{const n=Date.now();if(n-lastTouchEnd<400&&!(e.target.closest&&e.target.closest('input,textarea,select,#start,.pbox,#album')))e.preventDefault();lastTouchEnd=n;},{passive:false});
 
 // ---------- helpers ----------
 function tex(w,h,draw,rx=1,ry=1){const c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');draw(g,w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rx,ry);t.anisotropy=8;return t;}
@@ -894,7 +908,7 @@ const clean=(v,n=28)=>String(v??'').replace(/[\u0000-\u001f]/g,'').slice(0,n);
 const fmtT=t=>{const d=new Date(t);return d.toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit'})+' '+d.toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'});};
 let renderQueued=false;
 function renderChat(){renderQueued=false;const L=$('#chatLines');const arr=[...msgs.values()].sort((a,b)=>a.t-b.t).slice(-80);L.textContent='';
-  if(!arr.length){const d=document.createElement('div');d.className='cl sys';d.textContent='Chưa có tin nhắn. Nhấn Enter để chào cả trường!';L.appendChild(d);}
+  if(!arr.length){const d=document.createElement('div');d.className='cl sys';d.textContent=isTouch?'Chưa có tin nhắn. Bấm CHAT để chào cả trường!':'Chưa có tin nhắn. Nhấn Enter để chào cả trường!';L.appendChild(d);}
   for(const m of arr){const d=document.createElement('div');d.className='cl'+(m.mine?' me':'')+(m.fresh?'':' old');const b=document.createElement('b');b.textContent=m.name+(m.cls?` (${m.cls})`:'')+': ';d.append(b,m.text);L.appendChild(d);}
   L.scrollTop=L.scrollHeight;}
 function addMsg(m,speaker){if(!m.text||msgs.has(m.id))return;if(isTouch&&!m.mine&&!typing&&Date.now()-m.t<20000&&player){unread++;const u=$('#unread');u.textContent=unread>9?'9+':unread;u.style.display='block';}m.fresh=Date.now()-m.t<20000;msgs.set(m.id,m);if(m.fresh)setTimeout(()=>{m.fresh=false;if(!renderQueued){renderQueued=true;setTimeout(renderChat,30);}},12000);
@@ -975,6 +989,7 @@ function updateCeremony(dt){if(!ceremony)return;ceremony.t+=dt;const c=ceremony;
 // ---------- player ----------
 let player=null,ME=null;const keys={};const cam={yaw:0,pitch:0,dist:4.5};
 function startGame(){
+  try{document.activeElement&&document.activeElement.blur();}catch(e){}setTimeout(fitView,300);unzoom();
   const female=document.querySelector('#fSex .on').dataset.v==='f';let outfit=$('#fOutfit').value;if(outfit==='aodai'&&!female)outfit='somi';
   const nm=($('#fName').value.trim()||'Khách').slice(0,28);const nk=$('#fNk').value;const cls=$('#fClass').value+' · '+nk.replace(/^(\d\d)(\d\d)–(\d\d)(\d\d)$/,'$2–$4');ME={name:nm,cls,outfit,female};
   try{localStorage.setItem('ns_profile',JSON.stringify({name:nm,cls:$('#fClass').value,nk,outfit:$('#fOutfit').value,female}));}catch(e){}
@@ -1038,7 +1053,8 @@ J.addEventListener('pointerdown',e=>{joy.id=e.pointerId;J.setPointerCapture(e.po
 J.addEventListener('pointermove',e=>{if(e.pointerId===joy.id)moveJoy(e);});
 const endJoy=()=>{joy.id=null;joy.x=joy.y=0;K.style.left='35px';K.style.top='35px';};J.addEventListener('pointerup',endJoy);J.addEventListener('pointercancel',endJoy);
 function moveJoy(e){const r=J.getBoundingClientRect();let x=(e.clientX-r.left-60)/50,y=(e.clientY-r.top-60)/50;const l=Math.hypot(x,y);if(l>1){x/=l;y/=l;}joy.x=x;joy.y=y;K.style.left=(35+x*40)+'px';K.style.top=(35+y*40)+'px';}
-$('#mE').onclick=()=>{if(albumOpen)closeAlbum();else doInteract();};$('#mJ').onclick=jump;$('#mC').onclick=()=>openChat();$('#hudMenu').onclick=e=>{e.stopPropagation();setPause(true);};
+const tapBtn=(el,fn)=>{el.addEventListener('pointerdown',e=>{e.preventDefault();e.stopPropagation();el.classList.add('down');fn();});const up=()=>el.classList.remove('down');el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);el.addEventListener('pointerleave',up);};
+tapBtn($('#mE'),()=>{if(albumOpen)closeAlbum();else doInteract();});tapBtn($('#mJ'),jump);$('#mC').onclick=()=>openChat();$('#hudMenu').onclick=e=>{e.stopPropagation();setPause(true);};
 
 // ---------- look-at interaction ----------
 let current=null;const fwdV=new V3(),tmpV=new V3();
@@ -1241,7 +1257,7 @@ if(window.CloseWatcher===undefined){} // dự phòng: các trình duyệt mới 
 
 // ---------- loop ----------
 let last=performance.now(),T=0;
-function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;T+=dt;
+function loop(now){fitView();const dt=Math.min(0.05,(now-last)/1000);last=now;T+=dt;
   updateNPCs(dt);updateRemotes(dt);if(player){updatePlayer(dt);updateCeremony(dt);}updateFlag(T);updateMems(T);updateFootprints(T);updateCamera(dt,T);if(player){syncHistory();document.body.classList.toggle('ov',paused||mapOn||albumOpen||photoOpen||inviteOpen);}
   renderer.render(scene,camera);if(player){drawCompass();if(mapOn)drawMap();}updateBubble();requestAnimationFrame(loop);}
 requestAnimationFrame(loop);
