@@ -631,8 +631,8 @@ let renderQueued=false;
 function renderChat(){renderQueued=false;const L=$('#chatLines');const arr=[...msgs.values()].sort((a,b)=>a.t-b.t).slice(-60);L.textContent='';
   for(const m of arr){const d=document.createElement('div');d.className='cl'+(m.mine?' me':'')+(m.fresh?'':' old');const b=document.createElement('b');b.textContent=m.name+(m.cls?` (${m.cls})`:'')+': ';d.append(b,m.text);L.appendChild(d);}
   L.scrollTop=L.scrollHeight;}
-function addMsg(m,speaker){if(!m.text||msgs.has(m.id))return;m.fresh=Date.now()-m.t<20000;msgs.set(m.id,m);if(m.fresh)setTimeout(()=>{m.fresh=false;if(!renderQueued){renderQueued=true;requestAnimationFrame(renderChat);}},12000);
-  if(!renderQueued){renderQueued=true;requestAnimationFrame(renderChat);}
+function addMsg(m,speaker){if(!m.text||msgs.has(m.id))return;m.fresh=Date.now()-m.t<20000;msgs.set(m.id,m);if(m.fresh)setTimeout(()=>{m.fresh=false;if(!renderQueued){renderQueued=true;setTimeout(renderChat,30);}},12000);
+  if(!renderQueued){renderQueued=true;setTimeout(renderChat,30);}
   if(speaker&&m.fresh)showBubble(speaker,m.name+(m.cls?' · '+m.cls:''),m.text,7000);}
 let myMsg=null;
 $('#chatForm').addEventListener('submit',e=>{e.preventDefault();const inp=$('#chatIn');const text=inp.value.trim().slice(0,200);if(!text||!ME)return;inp.value='';
@@ -842,9 +842,11 @@ function drawMap(){const W=640,H=520,sx=x=>(x+42)/84*W,sz=z=>(z+32)/68*H;mctx.fi
 // ---------- loop ----------
 let last=performance.now(),T=0;
 function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;T+=dt;
-  updateNPCs(dt);updateRemotes(dt);if(player){updatePlayer(dt);updateCeremony(dt);sendPresence(dt);sendSupabase(dt);}updateFlag(T);updateMems(T);updateCamera(dt,T);
+  updateNPCs(dt);updateRemotes(dt);if(player){updatePlayer(dt);updateCeremony(dt);}updateFlag(T);updateMems(T);updateCamera(dt,T);
   renderer.render(scene,camera);if(player){drawCompass();if(mapOn)drawMap();}updateBubble();requestAnimationFrame(loop);}
 requestAnimationFrame(loop);
+// mạng chạy bằng đồng hồ riêng để tab ẩn vẫn gửi vị trí
+let netLast=performance.now();setInterval(()=>{const n=performance.now(),d=(n-netLast)/1000;netLast=n;if(player){sendPresence(d);sendSupabase(d);}},150);
 </script>
 </body>
 </html>
