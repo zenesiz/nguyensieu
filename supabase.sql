@@ -2,7 +2,7 @@
 create table if not exists public.chat (
   id   text primary key check (char_length(id) <= 40),
   name text not null check (char_length(name) between 1 and 40),
-  cls  text check (char_length(cls) <= 8),
+  cls  text check (char_length(cls) <= 24),
   text text not null check (char_length(text) between 1 and 200),
   t    bigint not null
 );

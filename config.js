@@ -6,6 +6,7 @@ window.NS_CONFIG = {
   // Nhạc nền: bỏ file .mp3 vào thư mục music/ rồi liệt kê ở đây, phát lần lượt và lặp lại.
   // Có thể ghi tên bài hiển thị: { src: "music/bai-1.mp3", title: "Tên bài – Ca sĩ" }
   music: [
-    // "music/bai-1.mp3",
+    { src: "music/mong-uoc-ky-niem-xua.mp3", title: "Mong ước kỷ niệm xưa – Tam ca Áo Trắng" },
+    // thêm bài mới: bỏ file vào thư mục music/ rồi thêm 1 dòng như trên
   ]
 };
