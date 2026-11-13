@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="color-scheme" content="only light">
 <meta name="darkreader-lock">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <title>Nguyễn Siêu – Sân trường Đê La Thành 1999–2002</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=Patrick+Hand&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -184,6 +184,137 @@ kbd{background:rgba(255,255,255,.9);color:#26392f;border-radius:4px;padding:0 5p
 
 #welcome{display:none;margin-top:14px;padding:8px 12px;background:#eef2fb;border-left:3px solid var(--ink);font-size:14px;color:#1d2a4a}
 #welcome b{color:var(--ink)}
+
+/* ===== Mobile / touch layout (mỗi góc một chủ) ===== */
+html,body{overscroll-behavior:none;height:100%;height:100dvh}
+button,.mb,.tb{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#hud,#mobile{-webkit-touch-callout:none}
+#topR{position:absolute;right:18px;top:12px;display:flex;align-items:flex-start;gap:6px;pointer-events:auto}
+#topR #music{position:relative;right:auto;top:auto}
+#music.ready{display:flex}
+.tb{display:none;width:44px;height:44px;border-radius:10px;border:1.5px solid rgba(255,176,46,.75);background:rgba(0,0,0,.5);color:#ffb02e;font:700 20px 'Chakra Petch',sans-serif;line-height:1;padding:0;cursor:pointer}
+.tb:active,.mb:active{background:rgba(255,176,46,.3)}
+#objBtn{display:none}
+.ovx{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:calc(env(safe-area-inset-right) + 12px);width:46px;height:46px;border-radius:50%;border:1.5px solid rgba(255,176,46,.8);background:rgba(0,0,0,.55);color:#ffb02e;font:600 20px 'Chakra Petch',sans-serif;line-height:1;cursor:pointer;z-index:2;pointer-events:auto;padding:0}
+.ovx.sm{width:34px;height:34px;font-size:15px;top:6px;right:6px}
+.ovx.dark{border-color:#1d2a4a;color:#1d2a4a;background:#fff;top:-14px;right:-14px}
+#album .page{position:relative}
+#bigmap{pointer-events:auto}
+#scores .ovx{top:6px;right:6px;width:34px;height:34px;font-size:15px}
+#obj .ovx,#chatX{display:none}
+#unread{display:none;position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:#e8453a;color:#fff;font:700 11px/20px 'Be Vietnam Pro';font-style:normal;padding:0 5px}
+#mobile .mb{position:fixed}
+#mE{right:calc(env(safe-area-inset-right) + 22px);bottom:calc(env(safe-area-inset-bottom) + 116px)}
+#mJ{right:calc(env(safe-area-inset-right) + 104px);bottom:calc(env(safe-area-inset-bottom) + 34px)}
+#mC{right:calc(env(safe-area-inset-right) + 28px);bottom:calc(env(safe-area-inset-bottom) + 34px)}
+.mb.big{width:76px;height:76px;font-size:13px}
+#joy{left:calc(env(safe-area-inset-left) + 22px)!important;bottom:calc(env(safe-area-inset-bottom) + 26px)!important}
+body.touch .tb{display:block}
+body.touch #topR #music{display:none;position:absolute;top:52px;right:0;flex-wrap:wrap;width:min(330px,88vw);padding:10px;gap:8px;background:rgba(8,10,12,.94);border:none;border-top:2px solid #ffb02e}
+body.touch #topR.mOpen #music{display:flex}
+body.touch #music .mt{max-width:none;flex:1 1 60%;order:-1}
+body.touch #music button{width:44px;height:40px;font-size:15px}
+body.touch #muPlay{width:44px!important;height:44px!important}
+body.touch #muVol{flex:1 1 120px;width:auto;height:30px}
+body.touch #muMenu{top:100%}
+body.touch #muMenu button{width:100%!important}
+body.touch #topR{top:calc(env(safe-area-inset-top) + 8px);right:calc(env(safe-area-inset-right) + 8px)}
+body.touch #date,body.touch #hint{display:none!important}
+body.touch #stat{top:calc(env(safe-area-inset-top) + 8px);left:calc(env(safe-area-inset-left) + 8px);bottom:auto;gap:3px;pointer-events:auto;cursor:pointer}
+body.touch .st{padding:3px 9px 2px}body.touch .sl{font-size:8.5px;letter-spacing:.12em}body.touch .sv{font-size:17px}body.touch .sv small{font-size:11px}
+body.touch #objBtn{display:block;position:absolute;top:calc(env(safe-area-inset-top) + 58px);left:calc(env(safe-area-inset-left) + 8px);height:32px;padding:0 12px;border:1px solid rgba(255,176,46,.6);background:rgba(0,0,0,.45);color:#ffb02e;font:600 11px 'Chakra Petch';letter-spacing:.15em;pointer-events:auto}
+body.touch #obj{display:none;top:calc(env(safe-area-inset-top) + 96px);left:calc(env(safe-area-inset-left) + 8px);right:auto;bottom:auto;pointer-events:auto;background:rgba(8,10,12,.9);border-right:none;border-left:2px solid #ffb02e;padding-right:46px}
+body.touch #obj.open{display:block}body.touch #obj .ovx{display:block}
+body.touch #compass{top:calc(env(safe-area-inset-top) + 8px);width:230px}
+body.touch #feed{top:calc(env(safe-area-inset-top) + 62px);right:calc(env(safe-area-inset-right) + 8px)}
+body.touch .fi{font-size:12px;padding:3px 10px 3px 20px}
+body.touch #cap{bottom:auto;top:24%;font-size:14px;max-width:86vw}
+body.touch #chatfeed{left:calc(env(safe-area-inset-left) + 12px);bottom:calc(env(safe-area-inset-bottom) + 166px);width:min(300px,52vw);background:none;border:none;pointer-events:none;padding:0}
+body.touch #chatfeed #chatForm{display:none}
+body.touch #chatfeed #chatLines{height:auto;max-height:66px;overflow:hidden;-webkit-mask-image:none;mask-image:none;padding:0}
+body.touch #chatfeed .cl{font-size:12.5px}body.touch #chatfeed .cl.old,body.touch #chatfeed .cl.sys{display:none}
+body.touch #chatfeed.typing{position:fixed;top:calc(env(safe-area-inset-top) + 8px);left:50%;transform:translateX(-50%);bottom:auto;width:min(560px,94vw);background:rgba(8,10,12,.9);border-left:2px solid #ffb02e;pointer-events:auto;z-index:9;padding:44px 0 0}
+body.touch #chatfeed.typing #chatX{display:block}
+body.touch #chatfeed.typing #chatForm{display:flex;padding:8px 10px}body.touch #chatfeed.typing #chatForm input{font-size:16px}
+body.touch #chatfeed.typing #chatLines{height:min(34vh,260px);max-height:none;overflow-y:auto;padding:0 12px}
+body.touch #chatfeed.typing .cl.old,body.touch #chatfeed.typing .cl.sys{display:block}
+body.touch #scores{pointer-events:auto;top:calc(env(safe-area-inset-top) + 60px)}
+body.touch #scores.open{display:block}
+body.touch .kb{display:none}
+body.touch #pause{padding:calc(env(safe-area-inset-top) + 18px) 22px 22px;flex-direction:column;align-items:flex-start;justify-content:flex-start;overflow-y:auto}
+body.touch .pk{display:none}body.touch .pt{font-size:28px;margin-bottom:12px;padding-right:56px}body.touch .mi{font-size:18px;padding:9px 0}
+body.touch #bigmap canvas{width:min(640px,94vw,calc((100dvh - 120px) * 1.23))}
+@media (orientation:portrait){body.touch #compass{top:calc(env(safe-area-inset-top) + 100px);width:200px}body.touch #feed{top:calc(env(safe-area-inset-top) + 140px)}}
+@media (orientation:landscape) and (max-height:500px){body.touch #objBtn{top:calc(env(safe-area-inset-top) + 56px)}body.touch #chatfeed{bottom:calc(env(safe-area-inset-bottom) + 160px);width:min(280px,34vw)}body.touch #chatfeed.typing #chatLines{height:min(26vh,160px)}
+  body.touch #pause{flex-direction:row;flex-wrap:wrap;gap:4px 30px}body.touch .pm{min-width:0}body.touch .mi{font-size:16px;padding:6px 0}body.touch .pt{font-size:22px}body.touch #album img{max-height:58vh}body.touch .mb.big{width:68px;height:68px}body.touch #mE{bottom:calc(env(safe-area-inset-bottom) + 104px)}}
+body.ov #topR,body.ov #mobile{visibility:hidden}
+
+/* ===== bản vá sau kiểm tra mobile ===== */
+/* ===== Mobile layout v2 – audit fixes (append after the existing touch block) ===== */
+/* 1. Stacking: top-right cluster + its music popover above the NHIỆM VỤ button / obj panel */
+#topR{z-index:3}
+/* 2. Music popover: tidy 2-row grid instead of wrapping flex */
+body.touch #topR.mOpen #music{display:grid;grid-template-columns:44px minmax(0,1fr) 44px 44px;grid-template-areas:"play title prev next" "vol vol vol list";align-items:center;gap:8px}
+body.touch #muPlay{grid-area:play}body.touch #music .mt{grid-area:title;margin:0}body.touch #muPrev{grid-area:prev}body.touch #muNext{grid-area:next}
+body.touch #muVol{grid-area:vol;width:100%}body.touch #muList{grid-area:list}body.touch #music .mv{display:none!important}
+/* 3. Passive chat (not typing): last 2 messages, max 3 lines each, readable on bright walls */
+body.touch #chatfeed #chatLines{max-height:none;overflow:visible}
+body.touch #chatfeed:not(.typing) .cl:not(:nth-last-child(-n+2)){display:none}
+body.touch #chatfeed:not(.typing) .cl{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;text-shadow:0 1px 2px #000,0 0 8px rgba(0,0,0,.95);background:linear-gradient(90deg,rgba(0,0,0,.45),transparent);padding:2px 8px;margin-top:3px}
+/* 4. Typing sheet: send button, fits above the on-screen keyboard (--vvh from visualViewport) */
+#chatSend{display:none}
+body.touch #chatfeed.typing{display:flex;flex-direction:column;max-height:calc(var(--vvh,100dvh) - env(safe-area-inset-top) - 16px)}
+body.touch #chatfeed.typing #chatLines{flex:1 1 auto;min-height:48px}
+body.touch #chatfeed.typing #chatSend{display:block;flex:none;width:44px;height:40px;border:1.5px solid #ffb02e;background:rgba(255,176,46,.15);color:#ffb02e;font:700 16px 'Chakra Petch',system-ui,sans-serif}
+body.touch #chatX{width:44px;height:44px;top:2px;right:2px;font-size:17px}
+/* 5. Touch targets >= 44px, legible minimum sizes */
+body.touch #objBtn{height:44px;font-size:12px}
+body.touch .ovx.sm{width:44px;height:44px}
+body.touch .mi{min-height:44px}
+body.touch .ms.chk label{padding:8px 0}body.touch .ms.chk input{width:20px;height:20px}
+body.touch #album .nav button{min-height:44px;min-width:88px}
+body.touch .sl{font-size:9.5px}
+body.touch #obj .oi{font-size:14px;padding-top:5px;padding-bottom:5px}
+/* 6. Album close button inside the page (was clipped at top in landscape) */
+.ovx.dark{top:8px;right:8px}
+/* 7. Font fallbacks (several rules name a webfont with no generic fallback -> Times on slow/blocked font load) */
+.oi,.sr,.pk td,.pkn,.fi.net,#chatForm input,#muTitle,#muMenu button,.ms.mus select{font-family:'Be Vietnam Pro',system-ui,sans-serif!important}
+#objBtn,.pk kbd,#chatForm span,.pmb{font-family:'Chakra Petch',system-ui,sans-serif!important}
+/* 8. Start form: Lớp / Niên khóa on two rows on narrow phones (Niên khóa value was truncated to "1999") */
+@media (max-width:480px){.line:has(#fNk){flex-wrap:wrap;row-gap:12px}.line:has(#fNk)>#fClass{flex:1 1 calc(100% - 84px)}.line:has(#fNk)>label{min-width:74px!important}}
+body.touch .keys .kb{display:none}
+/* ---------- phone landscape ---------- */
+@media (orientation:landscape) and (max-height:500px){
+  #start{padding:8px}#start .label{padding:14px 22px 0}#start h2{font-size:26px}#start p,#start .s{display:none}
+  #start .line{margin-top:8px}
+  #go{position:sticky;bottom:0;margin:12px -22px 0;width:calc(100% + 44px);transform:none;border-radius:0 0 20px 20px;background:#fff;border-width:3px 0 0;border-style:double;padding:8px}
+  #start .keys{display:none}
+  body.touch #chatfeed.typing{left:calc(env(safe-area-inset-left) + 8px);right:calc(env(safe-area-inset-right) + 112px);width:auto;transform:none}
+  body.touch .pm{display:block;column-count:2;column-gap:36px;width:100%}
+  body.touch .pt{column-span:all}body.touch .mi{display:block}body.touch .ms{break-inside:avoid}
+  body.touch #album .page{display:grid;grid-template-columns:auto minmax(220px,1fr);align-items:center;column-gap:18px;padding:12px 60px 12px 52px;max-height:100%}
+  body.touch #album img{max-height:calc(100dvh - 64px)}body.touch #album .ph{grid-row:span 2}
+}
+/* ---------- tablet (touch, both sides >= 700px): room for the full HUD ---------- */
+@media (pointer:coarse) and (min-width:700px) and (min-height:700px){
+  body.touch .st{padding:6px 14px 4px}body.touch .sl{font-size:10px;letter-spacing:.2em}body.touch .sv{font-size:24px}
+  body.touch #compass{width:320px;top:calc(env(safe-area-inset-top) + 12px)}
+  body.touch #objBtn{display:none}
+  body.touch #obj{display:block;top:calc(env(safe-area-inset-top) + 72px);padding-right:14px}body.touch #obj .ovx{display:none}
+  body.touch #chatfeed{width:360px;bottom:calc(env(safe-area-inset-bottom) + 176px)}body.touch #chatfeed .cl{font-size:14px}
+  body.touch #chatfeed:not(.typing) .cl:not(:nth-last-child(-n+4)){display:none}
+  .mb{width:72px;height:72px}.mb.big{width:84px;height:84px}#joy{width:150px;height:150px}#knob{left:47px;top:47px;width:56px;height:56px}
+}
+
+
+/* ===== bản vá sau kiểm tra chéo ===== */
+#bigmap{z-index:9}
+body.ov #hud{visibility:hidden}
+body.touch #stat{min-height:44px}body.touch .st{display:flex;flex-direction:column;justify-content:center}
+.ms.mus select,#pmTrack{max-width:100%}
+body.touch.objopen #chatfeed{visibility:hidden}
+body.touch.scoresopen #obj,body.touch.chatopen #obj{visibility:hidden}
+@media (orientation:landscape) and (max-height:500px){body.touch #obj{max-height:calc(100vh - 200px);overflow:auto;padding-right:52px}}
 </style>
 <script src="config.js"></script>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
@@ -195,29 +326,31 @@ kbd{background:rgba(255,255,255,.9);color:#26392f;border-radius:4px;padding:0 5p
   <div id="zone"><div id="zt"></div><div id="zs"></div></div>
   <div id="compass" class="hp"><canvas id="ccv" width="420" height="38"></canvas><div class="cm"></div></div>
   <div id="date" class="hp">THỨ HAI · 15·05·2000</div>
-  <div id="music" class="hp"><button id="muPlay" title="Bật/tắt nhạc (N)">❚❚</button><div class="mt"><div class="ml">NHẠC NỀN <span id="muNum"></span></div><div id="muTitle">—</div></div><button id="muPrev" title="Bài trước ( [ )">⏮</button><button id="muNext" title="Bài sau ( ] )">⏭</button><span class="mv">🔈</span><input type="range" id="muVol" min="0" max="1" step="0.05" value="0.4" title="Âm lượng nhạc ( - / = )"><button id="muList" title="Chọn bài">☰</button><div id="muMenu"></div></div>
+  <div id="topR" class="hp"><button id="muBtn" class="tb" title="Nhạc nền">♪</button><button id="hudMenu" class="tb" title="Menu">☰</button>
+  <div id="music"><button id="muPlay" title="Bật/tắt nhạc (N)">❚❚</button><div class="mt"><div class="ml">NHẠC NỀN <span id="muNum"></span></div><div id="muTitle">—</div></div><button id="muPrev" title="Bài trước ( [ )">⏮</button><button id="muNext" title="Bài sau ( ] )">⏭</button><span class="mv">🔈</span><input type="range" id="muVol" min="0" max="1" step="0.05" value="0.4" title="Âm lượng nhạc ( - / = )"><button id="muList" title="Chọn bài">☰</button><div id="muMenu"></div></div></div>
   <div id="xhair"><i></i><i></i><i></i><i></i><b></b></div>
   <div id="use"><span id="useK">E</span><span id="useT"></span></div>
   <div id="cap"></div>
   <div id="feed"></div>
-  <div id="chatfeed" class="hp"><div id="chatLines"></div><form id="chatForm"><span>NÓI</span><input id="chatIn" maxlength="200" autocomplete="off" placeholder="Nhấn Enter để trò chuyện…"></form></div>
+  <div id="chatfeed" class="hp"><button class="ovx sm" id="chatX" aria-label="Đóng chat">✕</button><div id="chatLines"></div><form id="chatForm"><span>NÓI</span><input id="chatIn" enterkeyhint="send" maxlength="200" autocomplete="off" placeholder="Nhấn Enter để trò chuyện…"><button type="submit" id="chatSend" aria-label="Gửi">➤</button></form></div>
+  <button id="objBtn" class="hp">NHIỆM VỤ <span id="objN">0/4</span></button>
   <div id="stat" class="hp">
     <div class="st"><div class="sl">KỶ NIỆM</div><div class="sv"><span id="cnt">0</span><small>/3</small></div></div>
     <div class="st"><div class="sl">ĐANG Ở SÂN</div><div class="sv" id="onl">1</div></div>
     <div class="st"><div class="sl">LỚP</div><div class="sv" id="myCls">–</div></div>
   </div>
-  <div id="obj" class="hp"><div class="oh">NHIỆM VỤ</div>
+  <div id="obj" class="hp"><div class="oh">NHIỆM VỤ</div><button class="ovx sm" id="objX" aria-label="Đóng">✕</button>
     <div class="oi" id="o-mem">Tìm ảnh kỷ niệm <span class="n">(0/3)</span></div>
     <div class="oi" id="o-drum">Đánh trống trường</div>
     <div class="oi" id="o-flag">Làm lễ chào cờ</div>
     <div class="oi" id="o-hello">Gửi lời chào cả trường</div>
   </div>
-  <div id="scores"><div class="sh">ĐANG Ở SÂN TRƯỜNG</div><div id="scoreList"></div><div class="sf">thả Tab để đóng</div></div>
+  <div id="scores"><button class="ovx" id="scoresX" aria-label="Đóng">✕</button><div class="sh">ĐANG Ở SÂN TRƯỜNG</div><div id="scoreList"></div><div class="sf">thả Tab hoặc bấm ✕ để đóng</div></div>
   <div id="hint"></div>
 </div>
-<div id="bigmap"><div class="mh">SƠ ĐỒ TRƯỜNG <small>M để đóng</small></div><canvas id="map" width="640" height="520"></canvas>
+<div id="bigmap"><button class="ovx" id="mapX" aria-label="Đóng bản đồ">✕</button><div class="mh">SƠ ĐỒ TRƯỜNG <small class="kb">M để đóng</small></div><canvas id="map" width="640" height="520"></canvas>
   <div class="lg"><span style="--c:#e6bc55">Dãy nhà</span><span style="--c:#2f7d60">Vách tôn</span><span style="--c:#b06a4f">Sân khấu</span><span style="--c:#da251d">Cột cờ</span><span style="--c:#ffb02e">Ảnh kỷ niệm</span><span style="--c:#7fb2ff">Người chơi</span></div></div>
-<div id="pause"><div class="pm">
+<div id="pause"><button class="ovx" id="pauseX" aria-label="Tiếp tục">✕</button><div class="pm">
   <div class="pt">NGUYỄN SIÊU<small>Đê La Thành · 1999 — 2002</small></div>
   <button class="mi" id="mResume">▶ Tiếp tục</button>
   <button class="mi" id="mProfile">Đổi tên · lớp · niên khóa</button>
@@ -244,13 +377,12 @@ kbd{background:rgba(255,255,255,.9);color:#26392f;border-radius:4px;padding:0 5p
 
 <div id="mobile">
   <div id="joy"><div id="knob"></div></div>
-  <button class="mb" id="mE" style="right:22px;bottom:118px">DÙNG</button>
-  <button class="mb" id="mJ" style="right:96px;bottom:40px">NHẢY</button>
-  <button class="mb sm" id="mC" style="right:22px;bottom:40px">CHAT</button>
-  <button class="mb sm" id="mP" style="right:14px;top:14px">☰</button>
+  <button class="mb big" id="mE">DÙNG</button>
+  <button class="mb" id="mJ">NHẢY</button>
+  <button class="mb sm" id="mC">CHAT<i id="unread"></i></button>
 </div>
 
-<div id="album"><div class="page">
+<div id="album"><div class="page"><button class="ovx dark" id="albumX" aria-label="Đóng album">✕</button>
   <div class="ph"><img id="aImg" alt=""></div>
   <div class="cap" id="aCap"></div>
   <div class="nav"><button id="aPrev">‹ Trước</button><button id="aClose">Đóng</button><button id="aNext">Sau ›</button></div>
@@ -273,7 +405,7 @@ kbd{background:rgba(255,255,255,.9);color:#26392f;border-radius:4px;padding:0 5p
     </select></div>
   <div id="welcome"></div>
   <button id="go">Vào trường</button>
-  <div class="keys">Vào trường rồi <b>nhấp chuột</b> để nhìn bằng chuột như game FPS · <kbd>W A S D</kbd> đi · <kbd>E</kbd> dùng vật đang nhìn · <kbd>Enter</kbd> trò chuyện · <kbd>Esc</kbd> menu.<br>Điện thoại: cần gạt trái để đi, vuốt nửa phải để nhìn.</div>
+  <div class="keys"><span class="kb">Vào trường rồi <b>nhấp chuột</b> để nhìn bằng chuột như game FPS · <kbd>W A S D</kbd> đi · <kbd>E</kbd> dùng vật đang nhìn · <kbd>Enter</kbd> trò chuyện · <kbd>Esc</kbd> menu.<br></span>Điện thoại: cần gạt trái để đi, vuốt nửa phải để nhìn.</div>
 </div></div>
 
 <script type="module">
@@ -609,7 +741,7 @@ function playTrack(i,announce=true){if(!MUSIC.length)return;bgmIdx=(i+MUSIC.leng
   bgm.src=t.src;applyVol();if(bgmOn){const pr=bgm.play();if(pr&&pr.catch)pr.catch(()=>{});if(announce)feed('♪ '+t.title,'net');}musicUI();saveMusic();}
 function toggleMusic(){bgmOn=!bgmOn;if(!bgm){playTrack(bgmIdx);return;}if(bgmOn){bgm.play().catch(()=>{});feed('♪ '+MUSIC[bgmIdx].title,'net');}else bgm.pause();musicUI();saveMusic();}
 function setVol(v,show){bgmVol=Math.round(Math.max(0,Math.min(1,v))*100)/100;applyVol();musicUI();saveMusic();if(show)feed('Âm lượng nhạc '+Math.round(bgmVol*100)+'%','net');}
-function startMusic(){if(!MUSIC.length)return;$('#music').style.display='flex';
+function startMusic(){if(!MUSIC.length)return;$('#music').classList.add('ready');
   const menu=$('#muMenu'),sel=$('#pmTrack');menu.textContent='';sel.textContent='';
   MUSIC.forEach((t,k)=>{const b=document.createElement('button');b.textContent=(k+1)+'. '+t.title;b.onclick=e=>{e.stopPropagation();bgmOn=true;playTrack(k);menu.classList.remove('open');};menu.appendChild(b);
     const o=document.createElement('option');o.value=String(k);o.textContent=t.title;sel.appendChild(o);});
@@ -642,16 +774,16 @@ function updateBubble(){const now=performance.now();for(const [ent,b] of bubbles
   const p=ent.pos.clone();p.y+=2.35;p.project(camera);if(p.z>1||Math.abs(p.x)>1.2||Math.abs(p.y)>1.2){b.d.style.display='none';continue;}b.d.style.display='block';b.d.style.left=((p.x+1)/2*innerWidth)+'px';b.d.style.top=((1-p.y)/2*innerHeight)+'px';}}
 // album
 let albumIdx=0,albumOpen=false;
-function openAlbum(i){const f=MEMS.filter(m=>m.found);if(!f.length){toast('Chưa nhặt được tấm ảnh nào. Theo dấu ◆ trên la bàn để tìm.');return;}unlock();albumIdx=Math.max(0,Math.min(f.length-1,i??0));const m=f[albumIdx];$('#aImg').src=m.src;$('#aCap').textContent=`${m.cap}  (${albumIdx+1}/${f.length})`;$('#album').style.display='flex';albumOpen=true;setPause(false);}
+function openAlbum(i){const f=MEMS.filter(m=>m.found);if(!f.length&&paused){const b=$('#mAlbum');b.textContent='Album · chưa nhặt được ảnh nào';setTimeout(()=>b.textContent='Album kỷ niệm',2600);return;}if(!f.length){toast('Chưa nhặt được tấm ảnh nào. Theo dấu ◆ trên la bàn để tìm.');return;}unlock();albumIdx=Math.max(0,Math.min(f.length-1,i??0));const m=f[albumIdx];$('#aImg').src=m.src;$('#aCap').textContent=`${m.cap}  (${albumIdx+1}/${f.length})`;$('#album').style.display='flex';albumOpen=true;setPause(false);}
 function closeAlbum(){$('#album').style.display='none';albumOpen=false;lock();if(!locked&&canLock&&!lockFailed)setPause(true);}
 $('#aClose').onclick=closeAlbum;
 $('#aPrev').onclick=()=>{const n=MEMS.filter(m=>m.found).length;openAlbum((albumIdx-1+n)%n);};
 $('#aNext').onclick=()=>{const n=MEMS.filter(m=>m.found).length;openAlbum((albumIdx+1)%n);};
 // map
-let mapOn=false;const toggleMap=v=>{mapOn=v??!mapOn;$('#bigmap').style.display=mapOn?'flex':'none';};
+let mapOn=false;const toggleMap=v=>{mapOn=v??!mapOn;$('#bigmap').style.display=mapOn?'flex':'none';if(!isTouch){if(mapOn){noPauseUntil=performance.now()+800;unlock();}else if(!paused)lock();}};
 // objectives
 const OBJ={};const OBJN={mem:'Tìm đủ ảnh kỷ niệm',drum:'Đánh trống trường',flag:'Làm lễ chào cờ',hello:'Gửi lời chào cả trường'};
-function doneObj(k){if(OBJ[k])return;OBJ[k]=true;$('#o-'+k).classList.add('done');feed('✓ HOÀN THÀNH · '+OBJN[k],'ok');chime();
+function doneObj(k){if(OBJ[k])return;OBJ[k]=true;$('#o-'+k).classList.add('done');updObjN();feed('✓ HOÀN THÀNH · '+OBJN[k],'ok');chime();
   if(Object.keys(OBJN).every(x=>OBJ[x]))setTimeout(()=>{showZone('VỀ TRƯỜNG','Hoàn thành mọi nhiệm vụ · hẹn gặp lại ở buổi họp lớp');},1500);}
 // pointer lock / pause
 let locked=false,paused=false,lockFailed=false,view='fp',sens=1;
@@ -665,18 +797,18 @@ document.addEventListener('pointerlockchange',()=>{locked=document.pointerLockEl
 function setPause(v){paused=v;$('#pause').style.display=v?'flex':'none';if(v)for(const k in keys)keys[k]=false;}
 $('#mResume').onclick=()=>{setPause(false);lock();};
 $('#mAlbum').onclick=()=>openAlbum(0);
-$('#mMap').onclick=()=>{setPause(false);toggleMap(true);lock();};
+$('#mMap').onclick=()=>toggleMap(true);
 $('#mView').onclick=()=>{view=view==='fp'?'tp':'fp';$('#mView').textContent='Góc nhìn: '+(view==='fp'?'thứ nhất':'thứ ba');};
 $('#mSound').onclick=()=>{soundOn=!soundOn;if(master)master.gain.value=soundOn?0.9:0;applyVol();$('#mSound').textContent='Âm thanh: '+(soundOn?'bật':'tắt');};
 $('#mSens').oninput=e=>{sens=+e.target.value;};
 for(const [id,el] of [['hObj','#obj'],['hComp','#compass'],['hChat','#chatfeed'],['hStat','#stat']])$('#'+id).onchange=e=>{$(el).style.opacity=e.target.checked?1:0;};
 let typing=false;
-function openChat(){if(!player)return;typing=true;$('#chatfeed').classList.add('typing');for(const k in keys)keys[k]=false;if(document.activeElement!==$('#chatIn'))$('#chatIn').focus();const L=$('#chatLines');L.scrollTop=L.scrollHeight;}
+function openChat(){if(!player)return;typing=true;document.body.classList.add('chatopen');unread=0;$('#unread').style.display='none';$('#chatfeed').classList.add('typing');for(const k in keys)keys[k]=false;if(document.activeElement!==$('#chatIn'))$('#chatIn').focus();const L=$('#chatLines');L.scrollTop=L.scrollHeight;}
 let noPauseUntil=0;
-function closeChat(){typing=false;noPauseUntil=performance.now()+600;$('#chatfeed').classList.remove('typing');$('#chatIn').value='';if(document.activeElement===$('#chatIn'))$('#chatIn').blur();const L=$('#chatLines');L.scrollTop=L.scrollHeight;lock();}
+function closeChat(){typing=false;document.body.classList.remove('chatopen');noPauseUntil=performance.now()+600;$('#chatfeed').classList.remove('typing');$('#chatIn').value='';if(document.activeElement===$('#chatIn'))$('#chatIn').blur();const L=$('#chatLines');L.scrollTop=L.scrollHeight;lock();}
 $('#chatIn').addEventListener('keydown',e=>{e.stopPropagation();if(e.code==='Escape'){e.preventDefault();closeChat();}});
 $('#chatIn').addEventListener('focus',()=>{if(!typing)openChat();});
-$('#chatIn').addEventListener('blur',()=>{if(typing){typing=false;$('#chatfeed').classList.remove('typing');}});
+$('#chatIn').addEventListener('blur',()=>{if(typing){typing=false;document.body.classList.remove('chatopen');$('#chatfeed').classList.remove('typing');}});
 
 // ---------- chat + online ----------
 const msgs=new Map();let room=null,db=null,dbOk=true;const remotes=new Map();
@@ -687,7 +819,7 @@ function renderChat(){renderQueued=false;const L=$('#chatLines');const arr=[...m
   if(!arr.length){const d=document.createElement('div');d.className='cl sys';d.textContent='Chưa có tin nhắn. Nhấn Enter để chào cả trường!';L.appendChild(d);}
   for(const m of arr){const d=document.createElement('div');d.className='cl'+(m.mine?' me':'')+(m.fresh?'':' old');const b=document.createElement('b');b.textContent=m.name+(m.cls?` (${m.cls})`:'')+': ';d.append(b,m.text);L.appendChild(d);}
   L.scrollTop=L.scrollHeight;}
-function addMsg(m,speaker){if(!m.text||msgs.has(m.id))return;m.fresh=Date.now()-m.t<20000;msgs.set(m.id,m);if(m.fresh)setTimeout(()=>{m.fresh=false;if(!renderQueued){renderQueued=true;setTimeout(renderChat,30);}},12000);
+function addMsg(m,speaker){if(!m.text||msgs.has(m.id))return;if(isTouch&&!m.mine&&!typing&&Date.now()-m.t<20000&&player){unread++;const u=$('#unread');u.textContent=unread>9?'9+':unread;u.style.display='block';}m.fresh=Date.now()-m.t<20000;msgs.set(m.id,m);if(m.fresh)setTimeout(()=>{m.fresh=false;if(!renderQueued){renderQueued=true;setTimeout(renderChat,30);}},12000);
   if(!renderQueued){renderQueued=true;setTimeout(renderChat,30);}
   if(speaker&&m.fresh)showBubble(speaker,m.name+(m.cls?' · '+m.cls:''),m.text,7000);}
 let myMsg=null;
@@ -716,9 +848,9 @@ function sendPresence(dt){if(!room||!player)return;presT+=dt;if(presT<0.12)retur
   const j=JSON.stringify(o);if(j===lastPres)return;lastPres=j;room.presence(o).catch(()=>{});}
 // --- Supabase (bản chạy ngoài Claude, ví dụ trên Vercel) ---
 let sbCh=null,sb=null,sbLast='',sbT=0,sbBeat=0;const myId=Math.random().toString(36).slice(2,10);
-function sendSupabase(dt){if(!sbCh||!player)return;sbT+=dt;sbBeat+=dt;if(sbT<0.2)return;sbT=0;
+function sendSupabase(dt){if(!sbCh||!player)return;sbT+=dt;sbBeat+=dt;if(sbT<0.3)return;sbT=0;
   const o={id:myId,n:ME.name,c:ME.cls,o:ME.outfit,f:ME.female?1:0,x:+player.pos.x.toFixed(2),z:+player.pos.z.toFixed(2),y:+player.pos.y.toFixed(2),r:+player.yaw.toFixed(2),m:+(player.speedNow||0).toFixed(1),msg:myMsg};
-  const j=JSON.stringify(o);if(j===sbLast&&sbBeat<3)return;sbLast=j;sbBeat=0;sbCh.send({type:'broadcast',event:'pos',payload:o}).catch?.(()=>{});}
+  const j=JSON.stringify(o);if(j===sbLast&&sbBeat<6)return;sbLast=j;sbBeat=0;sbCh.send({type:'broadcast',event:'pos',payload:o}).catch?.(()=>{});}
 async function initSupabase(cfg){
   try{const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');sb=createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);}catch(e){netNote('Không tải được kết nối chung, đang ở chế độ một mình.');return;}
   const ch=sb.channel('san-truong-nguyen-sieu',{config:{presence:{key:myId},broadcast:{self:false}}});
@@ -771,7 +903,7 @@ function startGame(){
   player={...p,pos:p.root.position,vy:0,yaw:Math.PI,phase:0,air:false,bob:0,crouch:0};player.pos.set(-27,0,30);p.root.add(nameSprite(nm));scene.add(p.root);
   cam.yaw=0;cam.pitch=0.05;$('#myCls').textContent=$('#fClass').value;
   $('#start').style.display='none';$('#hud').style.display='block';if(isTouch)$('#mobile').style.display='block';
-  initAudio();startMusic();renderChat();lock();setTimeout(()=>showZone('ĐƯỜNG ĐÊ LA THÀNH','Mùa hè năm 2000 · trước cổng trường'),300);zoneCur='ĐƯỜNG ĐÊ LA THÀNH';
+  initAudio();startMusic();renderChat();lock();if(isTouch){try{history.pushState({nsguard:1},'');}catch(e){}}setTimeout(()=>showZone('ĐƯỜNG ĐÊ LA THÀNH','Mùa hè năm 2000 · trước cổng trường'),300);zoneCur='ĐƯỜNG ĐÊ LA THÀNH';
   if(!canLock)setTimeout(()=>toast('Cần gạt bên trái để đi, vuốt nửa phải để nhìn. Nhìn vào đồ vật rồi bấm DÙNG.',6),2500);}
 const cls=$('#fClass');for(const g of [10,11,12])for(const l of CLASS_L){const o=document.createElement('option');o.textContent=`${g}${l}`;cls.appendChild(o);}cls.value='12A';
 document.querySelectorAll('#fSex button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#fSex button').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(b.dataset.v==='f')$('#fOutfit').value='aodai';else if($('#fOutfit').value==='aodai')$('#fOutfit').value='somi';});
@@ -825,7 +957,7 @@ J.addEventListener('pointerdown',e=>{joy.id=e.pointerId;J.setPointerCapture(e.po
 J.addEventListener('pointermove',e=>{if(e.pointerId===joy.id)moveJoy(e);});
 const endJoy=()=>{joy.id=null;joy.x=joy.y=0;K.style.left='35px';K.style.top='35px';};J.addEventListener('pointerup',endJoy);J.addEventListener('pointercancel',endJoy);
 function moveJoy(e){const r=J.getBoundingClientRect();let x=(e.clientX-r.left-60)/50,y=(e.clientY-r.top-60)/50;const l=Math.hypot(x,y);if(l>1){x/=l;y/=l;}joy.x=x;joy.y=y;K.style.left=(35+x*40)+'px';K.style.top=(35+y*40)+'px';}
-$('#mE').onclick=()=>{if(albumOpen)closeAlbum();else doInteract();};$('#mJ').onclick=jump;$('#mC').onclick=()=>openChat();$('#mP').onclick=()=>setPause(!paused);
+$('#mE').onclick=()=>{if(albumOpen)closeAlbum();else doInteract();};$('#mJ').onclick=jump;$('#mC').onclick=()=>openChat();$('#hudMenu').onclick=e=>{e.stopPropagation();setPause(true);};
 
 // ---------- look-at interaction ----------
 let current=null;const fwdV=new V3(),tmpV=new V3();
@@ -868,7 +1000,7 @@ function updatePlayer(dt){
   // look target
   current=player&&!frozen?lookTarget():null;const u=$('#use'),xh=$('#xhair');
   if(current){u.style.display='block';u.classList.toggle('info',!current.act);$('#useT').textContent=current.act?current.label():current.info;xh.classList.toggle('act',!!current.act);}else{u.style.display='none';xh.classList.remove('act');}
-  $('#hint').style.display=(!locked&&canLock&&!lockFailed&&!paused&&!albumOpen&&!typing)?'block':'none';$('#hint').textContent='Nhấp chuột để tiếp tục';}
+  $('#hint').style.display=(!locked&&canLock&&!lockFailed&&!paused&&!albumOpen&&!typing&&!mapOn)?'block':'none';$('#hint').textContent='Nhấp chuột để tiếp tục';}
 
 // ---------- camera ----------
 const ray=new THREE.Raycaster();const camTarget=new V3();
@@ -908,10 +1040,40 @@ function drawMap(){const W=640,H=520,sx=x=>(x+42)/84*W,sz=z=>(z+32)/68*H;mctx.fi
   if(player){mctx.save();mctx.translate(sx(player.pos.x),sz(player.pos.z));mctx.rotate(-cam.yaw);mctx.fillStyle='#fff3dc';mctx.beginPath();mctx.moveTo(0,-9);mctx.lineTo(6,6);mctx.lineTo(0,3);mctx.lineTo(-6,6);mctx.closePath();mctx.fill();mctx.restore();}
   mctx.fillStyle='#fff3dc';mctx.font="600 13px 'Chakra Petch'";mctx.fillText('ĐƯỜNG ĐÊ LA THÀNH',14,sz(30));mctx.fillText('CỔNG',sx(-29.5),sz(21.5));mctx.fillText('SÂN KHẤU',sx(-4),sz(21));mctx.fillText('DÃY NHÀ CHÍNH',sx(-6),sz(-25));mctx.fillText('NHÀ XE',sx(24),sz(20.5));}
 
+// ---------- mobile: overlays, close buttons, back gesture ----------
+if(isTouch)document.body.classList.add('touch');
+let scoresOpen=false,musicOpen=false,objOpen=false,unread=0;
+function setScores(v){scoresOpen=v;document.body.classList.toggle('scoresopen',v);showScores(v);$('#scores').classList.toggle('open',v);}
+function setMusicPop(v){musicOpen=v;$('#topR').classList.toggle('mOpen',v);}
+function setObj(v){objOpen=v;document.body.classList.toggle('objopen',v);$('#obj').classList.toggle('open',v);}
+$('#muBtn').onclick=e=>{e.stopPropagation();setMusicPop(!musicOpen);};
+$('#music').addEventListener('click',e=>e.stopPropagation());
+$('#objBtn').onclick=e=>{e.stopPropagation();setObj(!objOpen);};$('#objX').onclick=e=>{e.stopPropagation();setObj(false);};
+$('#stat').onclick=()=>{if(isTouch)setScores(!scoresOpen);};$('#scoresX').onclick=e=>{e.stopPropagation();setScores(false);};
+$('#mapX').onclick=()=>toggleMap(false);$('#bigmap').addEventListener('click',e=>{if(e.target.id==='bigmap')toggleMap(false);});
+$('#pauseX').onclick=()=>{setPause(false);lock();};
+$('#albumX').onclick=closeAlbum;$('#album').addEventListener('click',e=>{if(e.target.id==='album')closeAlbum();});
+$('#chatX').addEventListener('pointerdown',e=>e.preventDefault());$('#chatX').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeChat();});
+addEventListener('click',()=>{if(musicOpen)setMusicPop(false);});
+if(window.visualViewport){const vv=visualViewport,f=()=>document.documentElement.style.setProperty('--vvh',vv.height+'px');vv.addEventListener('resize',f);f();}
+$('#chatSend').addEventListener('pointerdown',e=>e.preventDefault());
+if(isTouch){const l=$('#mSens').previousElementSibling;if(l)l.textContent='Độ nhạy vuốt';$('#scores .sf').textContent='Bấm ✕ hoặc vuốt Back để đóng';$('#chatIn').placeholder='Nhập tin nhắn…';}
+function updObjN(){$('#objN').textContent=Object.keys(OBJN).filter(k=>OBJ[k]).length+'/4';}
+// Lịch sử trình duyệt: mở lớp phủ → thêm 1 mục; vuốt Back / nút Back → đóng lớp phủ trên cùng.
+let ignorePop=false;
+function anyOverlay(){return paused||mapOn||albumOpen||scoresOpen||musicOpen||objOpen||(isTouch&&typing);}
+function closeTop(){if(albumOpen)return closeAlbum();if(mapOn)return toggleMap(false);if(scoresOpen)return setScores(false);if(musicOpen)return setMusicPop(false);if(objOpen)return setObj(false);if(typing)return closeChat();if(paused){setPause(false);lock();}}
+function syncHistory(){if(!isTouch||!player||ignorePop)return;const st=history.state&&history.state.nsov;const open=anyOverlay();
+  try{if(open&&!st)history.pushState({nsov:1},'');else if(!open&&st){ignorePop=true;history.back();setTimeout(()=>{ignorePop=false;},1500);}}catch(e){}}
+addEventListener('popstate',()=>{if(ignorePop){ignorePop=false;return;}if(!player||!isTouch)return;
+  if(!history.state){try{history.pushState({nsguard:1},'');}catch(e){}if(!anyOverlay()){setPause(true);return;}}
+  closeTop();});
+if(window.CloseWatcher===undefined){} // dự phòng: các trình duyệt mới cũng gửi popstate cho cử chỉ back
+
 // ---------- loop ----------
 let last=performance.now(),T=0;
 function loop(now){const dt=Math.min(0.05,(now-last)/1000);last=now;T+=dt;
-  updateNPCs(dt);updateRemotes(dt);if(player){updatePlayer(dt);updateCeremony(dt);}updateFlag(T);updateMems(T);updateCamera(dt,T);
+  updateNPCs(dt);updateRemotes(dt);if(player){updatePlayer(dt);updateCeremony(dt);}updateFlag(T);updateMems(T);updateCamera(dt,T);if(player){syncHistory();document.body.classList.toggle('ov',paused||mapOn||albumOpen);}
   renderer.render(scene,camera);if(player){drawCompass();if(mapOn)drawMap();}updateBubble();requestAnimationFrame(loop);}
 requestAnimationFrame(loop);
 // mạng chạy bằng đồng hồ riêng để tab ẩn vẫn gửi vị trí
