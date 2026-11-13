@@ -195,6 +195,7 @@ kbd{background:rgba(255,255,255,.9);color:#26392f;border-radius:4px;padding:0 5p
   <button class="mi" id="mMap">Sơ đồ trường</button>
   <button class="mi" id="mView">Góc nhìn: thứ nhất</button>
   <button class="mi" id="mSound">Âm thanh: bật</button>
+  <div id="musicBox" style="display:none"><button class="mi" id="mMusic">Nhạc nền: bật</button><button class="mi" id="mNext">Bài tiếp theo ›</button><div class="ms"><label>Âm lượng nhạc</label><input type="range" id="mVol" min="0" max="1" step="0.05" value="0.35"></div></div>
   <div class="ms"><label>Độ nhạy chuột</label><input type="range" id="mSens" min="0.3" max="2.5" step="0.1" value="1"></div>
   <div class="ms chk"><label><input type="checkbox" id="hObj" checked> Bảng nhiệm vụ</label><label><input type="checkbox" id="hComp" checked> La bàn</label><label><input type="checkbox" id="hChat" checked> Khung chat</label><label><input type="checkbox" id="hStat" checked> Chỉ số</label></div>
 </div>
@@ -557,9 +558,16 @@ function updateMems(t){for(const m of MEMS){const k=m.found?0.35:1;m.halo.materi
 let ac=null,master=null,noiseBuf=null,soundOn=true;
 function initAudio(){try{ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=0.9;master.connect(ac.destination);
   noiseBuf=ac.createBuffer(1,ac.sampleRate*2,ac.sampleRate);const d=noiseBuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
-  const n=ac.createBufferSource();n.buffer=noiseBuf;n.loop=true;const bp=ac.createBiquadFilter();bp.type='bandpass';bp.frequency.value=4800;bp.Q.value=4;const cg=ac.createGain();cg.gain.value=0.0;
-  const lfo=ac.createOscillator();lfo.frequency.value=22;const lg=ac.createGain();lg.gain.value=0.012;lfo.connect(lg).connect(cg.gain);const base=ac.createConstantSource?ac.createConstantSource():null;if(base){base.offset.value=0.014;base.connect(cg.gain);base.start();}
-  n.connect(bp).connect(cg).connect(master);n.start();lfo.start();}catch(e){ac=null;}}
+  }catch(e){ac=null;}}
+// ---------- background music (danh sách bài trong config.js) ----------
+const MUSIC=((window.NS_CONFIG||{}).music||[]).map(m=>typeof m==='string'?{src:m,title:decodeURIComponent(m.split('/').pop().replace(/\.[^.]+$/,'').replace(/[-_]+/g,' '))}:m).filter(m=>m&&m.src);
+let bgm=null,bgmIdx=0,bgmOn=true;
+function playTrack(i){if(!MUSIC.length)return;bgmIdx=(i+MUSIC.length)%MUSIC.length;const t=MUSIC[bgmIdx];if(!bgm){bgm=new Audio();bgm.addEventListener('ended',()=>playTrack(bgmIdx+1));bgm.addEventListener('error',()=>{feed('Không mở được file nhạc: '+t.src,'net');});}
+  bgm.src=t.src;bgm.volume=+$('#mVol').value*(soundOn?1:0);if(bgmOn){const pr=bgm.play();if(pr&&pr.catch)pr.catch(()=>{});feed('♪ '+(t.title||'Nhạc nền'),'net');}}
+function startMusic(){if(!MUSIC.length)return;$('#musicBox').style.display='contents';playTrack(0);}
+$('#mMusic').onclick=()=>{bgmOn=!bgmOn;$('#mMusic').textContent='Nhạc nền: '+(bgmOn?'bật':'tắt');if(!bgm)return;if(bgmOn)bgm.play().catch(()=>{});else bgm.pause();};
+$('#mNext').onclick=()=>{bgmOn=true;$('#mMusic').textContent='Nhạc nền: bật';playTrack(bgmIdx+1);};
+$('#mVol').oninput=e=>{if(bgm)bgm.volume=+e.target.value*(soundOn?1:0);};
 function drumHit(t,v=1){if(!ac)return;const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.setValueAtTime(115,t);o.frequency.exponentialRampToValueAtTime(46,t+0.4);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v,t+0.006);g.gain.exponentialRampToValueAtTime(0.0001,t+1.1);o.connect(g).connect(master);o.start(t);o.stop(t+1.2);
   const n=ac.createBufferSource();n.buffer=noiseBuf;const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=1100;const gn=ac.createGain();gn.gain.setValueAtTime(v*0.6,t);gn.gain.exponentialRampToValueAtTime(0.0001,t+0.16);n.connect(f).connect(gn).connect(master);n.start(t);n.stop(t+0.2);}
 function drumPattern(times,v=1){if(!ac)return;const t0=ac.currentTime+0.05;times.forEach((x,i)=>drumHit(t0+x,typeof v==='function'?v(i):v));}
@@ -607,7 +615,7 @@ $('#mResume').onclick=()=>{setPause(false);lock();};
 $('#mAlbum').onclick=()=>openAlbum(0);
 $('#mMap').onclick=()=>{setPause(false);toggleMap(true);lock();};
 $('#mView').onclick=()=>{view=view==='fp'?'tp':'fp';$('#mView').textContent='Góc nhìn: '+(view==='fp'?'thứ nhất':'thứ ba');};
-$('#mSound').onclick=()=>{soundOn=!soundOn;if(master)master.gain.value=soundOn?0.9:0;$('#mSound').textContent='Âm thanh: '+(soundOn?'bật':'tắt');};
+$('#mSound').onclick=()=>{soundOn=!soundOn;if(master)master.gain.value=soundOn?0.9:0;if(bgm)bgm.volume=+$('#mVol').value*(soundOn?1:0);$('#mSound').textContent='Âm thanh: '+(soundOn?'bật':'tắt');};
 $('#mSens').oninput=e=>{sens=+e.target.value;};
 for(const [id,el] of [['hObj','#obj'],['hComp','#compass'],['hChat','#chatfeed'],['hStat','#stat']])$('#'+id).onchange=e=>{$(el).style.opacity=e.target.checked?1:0;};
 let typing=false;
@@ -705,7 +713,7 @@ function startGame(){
   player={...p,pos:p.root.position,vy:0,yaw:Math.PI,phase:0,air:false,bob:0,crouch:0};player.pos.set(-27,0,30);p.root.add(nameSprite(nm));scene.add(p.root);
   cam.yaw=0;cam.pitch=0.05;$('#myCls').textContent=cls;
   $('#start').style.display='none';$('#hud').style.display='block';if(isTouch)$('#mobile').style.display='block';
-  initAudio();lock();setTimeout(()=>showZone('ĐƯỜNG ĐÊ LA THÀNH','Mùa hè năm 2000 · trước cổng trường'),300);zoneCur='ĐƯỜNG ĐÊ LA THÀNH';
+  initAudio();startMusic();lock();setTimeout(()=>showZone('ĐƯỜNG ĐÊ LA THÀNH','Mùa hè năm 2000 · trước cổng trường'),300);zoneCur='ĐƯỜNG ĐÊ LA THÀNH';
   if(!canLock)setTimeout(()=>toast('Cần gạt bên trái để đi, vuốt nửa phải để nhìn. Nhìn vào đồ vật rồi bấm DÙNG.',6),2500);}
 const cls=$('#fClass');for(const g of [10,11,12])for(const l of CLASS_L){const o=document.createElement('option');o.textContent=`${g}${l}`;cls.appendChild(o);}cls.value='12A';
 document.querySelectorAll('#fSex button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#fSex button').forEach(x=>x.classList.remove('on'));b.classList.add('on');if(b.dataset.v==='f')$('#fOutfit').value='aodai';else if($('#fOutfit').value==='aodai')$('#fOutfit').value='somi';});

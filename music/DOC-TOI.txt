@@ -1,0 +1,2 @@
+Bỏ file nhạc (.mp3) vào thư mục này, rồi khai báo tên file trong config.js, mục music.
+Nên đặt tên file không dấu, không khoảng trắng. Ví dụ: mua-he-xanh.mp3
