@@ -3,10 +3,10 @@ window.NS_CONFIG = {
   supabaseUrl: "https://conuowirffpxtbthcvpl.supabase.co",
   supabaseAnonKey: "sb_publishable_zomLzMGVHNHqfl-fNbNAoA_s8CSuY2w",
 
-  // Nhạc nền: bỏ file .mp3 vào thư mục music/ rồi liệt kê ở đây, phát lần lượt và lặp lại.
-  // Có thể ghi tên bài hiển thị: { src: "music/bai-1.mp3", title: "Tên bài – Ca sĩ" }
+  // Nhạc nền: phát lần lượt và lặp lại. Mỗi bài là một trong hai dạng:
+  //   - video YouTube: { yt: "mã video", title: "Tên bài" }   (mã là phần sau youtu.be/ hoặc watch?v=)
+  //   - file mp3 trong thư mục music/: { src: "music/ten-bai.mp3", title: "Tên bài" }
   music: [
-    { src: "music/mong-uoc-ky-niem-xua.mp3", title: "Mong ước kỷ niệm xưa – Tam ca Áo Trắng" },
-    // thêm bài mới: bỏ file vào thư mục music/ rồi thêm 1 dòng như trên
+    { yt: "U34PR8_tKJ8", title: "Bài ca Trường Nguyễn Siêu (MV 2016)" },
   ]
 };
