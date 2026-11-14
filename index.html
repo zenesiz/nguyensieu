@@ -15,6 +15,7 @@
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#14191a">
+<link rel="icon" href="img/icon.png"><link rel="apple-touch-icon" href="img/icon.png">
 <title>Nguyễn Siêu – Sân trường Đê La Thành 1999–2002</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800&family=Patrick+Hand&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -553,7 +554,7 @@ function box(w,h,d,mat,x=0,y=0,z=0,o){const m=mesh(new THREE.BoxGeometry(w,h,d),
 
 // ---------- collision world ----------
 const obstacles=[],platforms=[],camBlockers=[];
-const BOUNDS={minX:-39.5,maxX:39.5,minZ:-29.4,maxZ:33.5};
+const BOUNDS={minX:-39.5,maxX:39.5,minZ:-29.4,maxZ:42};
 function addObs(o,blockCam=false){o.updateMatrixWorld(true);const b=new THREE.Box3().setFromObject(o);obstacles.push({minX:b.min.x,maxX:b.max.x,minZ:b.min.z,maxZ:b.max.z});if(blockCam)camBlockers.push(o);}
 function addPlat(o){o.updateMatrixWorld(true);const b=new THREE.Box3().setFromObject(o);platforms.push({minX:b.min.x,maxX:b.max.x,minZ:b.min.z,maxZ:b.max.z,top:b.max.y});}
 function obsRect(minX,maxX,minZ,maxZ){obstacles.push({minX,maxX,minZ,maxZ});}
@@ -605,11 +606,11 @@ const houseTex=tex(256,512,(g,w,h)=>{g.fillStyle='#ffffff';g.fillRect(0,0,w,h);s
 
 // ---------- ground ----------
 const ground=mesh(new THREE.PlaneGeometry(300,300),M(0xffffff,{map:rep(grassTex,60,60)}),{cast:false});ground.rotation.x=-Math.PI/2;scene.add(ground);
-const yard=mesh(new THREE.PlaneGeometry(80,56),M(0xffffff,{map:rep(tileTex,20,14)}),{cast:false});yard.rotation.x=-Math.PI/2;yard.position.set(0,0.01,-2);scene.add(yard);
-const road=mesh(new THREE.PlaneGeometry(300,9),M(0xffffff,{map:rep(asphaltTex,60,2)}),{cast:false});road.rotation.x=-Math.PI/2;road.position.set(0,0.015,29.5);scene.add(road);
-for(let x=-140;x<140;x+=6){const d=box(3,0.01,0.15,M(0xe8e2c8),x,0.02,29.5,{cast:false});scene.add(d);}
-const walk=box(300,0.12,2.4,concreteMat,0,0.06,24.4,{cast:false});scene.add(walk);
-const walk2=box(300,0.12,2.6,concreteMat,0,0.06,35.1,{cast:false});scene.add(walk2);
+const yard=mesh(new THREE.PlaneGeometry(80,64),M(0xffffff,{map:rep(tileTex,20,16)}),{cast:false});yard.rotation.x=-Math.PI/2;yard.position.set(0,0.01,2);scene.add(yard);
+const road=mesh(new THREE.PlaneGeometry(300,9),M(0xffffff,{map:rep(asphaltTex,60,2)}),{cast:false});road.rotation.x=-Math.PI/2;road.position.set(0,0.015,38.5);scene.add(road);
+for(let x=-140;x<140;x+=6){const d=box(3,0.01,0.15,M(0xe8e2c8),x,0.02,38.5,{cast:false});scene.add(d);}
+const walk=box(300,0.12,2.4,concreteMat,0,0.06,32.8,{cast:false});scene.add(walk);
+const walk2=box(300,0.12,2.6,concreteMat,0,0.06,44.2,{cast:false});scene.add(walk2);
 
 // ---------- buildings ----------
 const CLASS_L=['A','B','C','D','E','G','H','I','K'];
@@ -643,12 +644,35 @@ const north=building({L:64.8,floors:3,slogan:'TRƯỜNG PHỔ THÔNG DÂN LẬP 
 place(north,0,-20,0);
 const west=building({L:36,floors:2,slogan:'TIÊN HỌC LỄ – HẬU HỌC VĂN',names:[['Y tế','Thí nghiệm','Thư viện','P. Giáo viên','P. Hiệu trưởng'],['Hội trường','P. Sinh','P. Hóa','P. Lý','P. Vi tính']]});
 place(west,-30,-2,Math.PI/2);
-const east=building({L:36,floors:2,slogan:'DẠY TỐT – HỌC TỐT',names:[['9A','9B','9C','9D','9E'],['8A','8B','8C','8D','8E']]});
+const east=building({L:36,floors:3,slogan:'DẠY TỐT – HỌC TỐT',names:[['9A','9B','9C','9D','9E'],['8A','8B','8C','8D','8E'],['7A','7B','7C','7D','7E']]});
 place(east,30,-2,-Math.PI/2);
-for(const s of [-1,1]){const c=box(7.2,FH*2+0.6,9,wallMatS,s*36,(FH*2+0.6)/2,-24.5);scene.add(c);addObs(c,true);
-  const r=mesh(new THREE.BoxGeometry(7.6,0.3,9.4),M(0x9e4a2c));r.position.set(s*36,FH*2+0.75,-24.5);scene.add(r);}
+for(const s of [-1,1]){const fl=s>0?3:2;const c=box(7.2,FH*fl+0.6,9,wallMatS,s*36,(FH*fl+0.6)/2,-24.5);scene.add(c);addObs(c,true);
+  const r=mesh(new THREE.BoxGeometry(7.6,0.3,9.4),M(0x9e4a2c));r.position.set(s*36,FH*fl+0.75,-24.5);scene.add(r);}
 // boundary walls (yellow) at side ends
-for(const s of [-1,1]){const w=box(9,2.4,0.25,wallMatS,s*35,1.2,23.1);scene.add(w);addObs(w);const w2=box(0.25,2.4,7,wallMatS,s*39.3,1.2,19.5);scene.add(w2);addObs(w2);}
+for(const s of [-1,1]){const w=box(9,2.4,0.25,wallMatS,s*35,1.2,31.6);scene.add(w);addObs(w);const w2=box(0.25,2.4,15.6,wallMatS,s*39.3,1.2,23.8);scene.add(w2);addObs(w2);}
+// ---------- dãy nhà 4 tầng sau sân khấu (mặt ngoài quay ra đường Đê La Thành) ----------
+const B4={x0:-22.6,x1:40,z0:23.4,z1:31.6,H:FH*4};
+const b4Tex=tex(720,340,(g,w,h)=>{g.fillStyle='#d9d5c9';g.fillRect(0,0,w,h);speckle(g,w,h,2600,'90,85,70');stains(g,w,h,10);
+  g.fillStyle='#bdb7a8';g.fillRect(0,h-18,w,18);g.fillStyle='#eceae2';g.fillRect(0,h-22,w,4);
+  for(const wx of [50,390]){const ww=280,wy=78,wh=176;g.fillStyle='#f1efe8';g.fillRect(wx-8,wy-8,ww+16,wh+16);g.fillStyle='#38424a';g.fillRect(wx,wy,ww,wh);
+    g.fillStyle='#a7aeb0';for(let y=wy+6;y<wy+wh;y+=11)g.fillRect(wx,y,ww,5);g.fillStyle='#f1efe8';for(let x=wx+ww/4;x<wx+ww;x+=ww/4)g.fillRect(x-3,wy,6,wh);}
+  g.fillStyle='rgba(60,50,30,.18)';for(let x=0;x<w;x+=360)g.fillRect(x,0,10,h);});
+const b4Side=M(0xd6d2c6);
+const b4Front=new THREE.MeshStandardMaterial({map:rep(b4Tex,(B4.x1-B4.x0)/7.2,4),roughness:0.95});
+const b4=new THREE.Mesh(new THREE.BoxGeometry(B4.x1-B4.x0,B4.H,B4.z1-B4.z0),[b4Side,b4Side,M(0x8f8a80),b4Side,b4Front,b4Front]);
+b4.position.set((B4.x0+B4.x1)/2,B4.H/2,(B4.z0+B4.z1)/2);b4.castShadow=b4.receiveShadow=true;scene.add(b4);addObs(b4,true);
+const b4par=box(B4.x1-B4.x0+0.3,1.5,0.3,M(0xe4e1d8),(B4.x0+B4.x1)/2,B4.H+0.75,B4.z1+0.05);scene.add(b4par);
+const b4sign=new THREE.Mesh(new THREE.PlaneGeometry(30,2.3),new THREE.MeshStandardMaterial({map:textTex('TRƯỜNG  P T D L  NGUYỄN SIÊU',{w:2048,h:160,color:'#7a2a1c',size:120,stroke:'rgba(255,255,255,.35)'}),transparent:true}));
+b4sign.position.set(4,B4.H+1.35,B4.z1+0.22);scene.add(b4sign);
+// cửa tầng trệt phía đường + cây chuối
+for(const x of [-6,10,26]){scene.add(box(2.2,2.6,0.08,M(0x3d4a52),x,1.3,B4.z1+0.05));scene.add(box(2.6,0.15,0.6,M(0xbdb7a8),x,2.75,B4.z1+0.3));}
+const bananaTex=tex(64,256,(g,w,h)=>{g.clearRect(0,0,w,h);const gr=g.createLinearGradient(0,0,w,0);gr.addColorStop(0,'#3f7a25');gr.addColorStop(0.5,'#6aa83a');gr.addColorStop(1,'#3f7a25');g.fillStyle=gr;
+  g.beginPath();g.moveTo(w/2,h);g.bezierCurveTo(-4,h*0.7,-4,h*0.15,w/2,0);g.bezierCurveTo(w+4,h*0.15,w+4,h*0.7,w/2,h);g.fill();g.fillStyle='#c9d98a';g.fillRect(w/2-1.5,0,3,h);
+  g.strokeStyle='rgba(40,70,20,.5)';for(let y=10;y<h;y+=9){g.beginPath();g.moveTo(w/2,y);g.lineTo(4,y-6);g.moveTo(w/2,y);g.lineTo(w-4,y-6);g.stroke();}});
+function banana(x,z){const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);const tr=mesh(new THREE.CylinderGeometry(0.16,0.22,2.4,8),M(0x6f7a3a));tr.position.y=1.2;g.add(tr);
+  const lm=new THREE.MeshStandardMaterial({map:bananaTex,side:THREE.DoubleSide,alphaTest:0.5,roughness:0.8});for(let i=0;i<8;i++){const geo=new THREE.PlaneGeometry(0.75,2.6,1,6);geo.translate(0,1.3,0);const pa=geo.attributes.position;for(let k=0;k<pa.count;k++){const y=pa.getY(k);pa.setZ(k,-y*y*0.12);}geo.computeVertexNormals();const lf=mesh(geo,lm);lf.position.y=2.3;lf.rotation.set(rand(0.35,0.9),i*0.8+rand(-0.2,0.2),0,'YXZ');g.add(lf);}
+  obsRect(x-0.3,x+0.3,z-0.3,z+0.3);}
+banana(-16,32.9);banana(-13.5,33.2);banana(3,33);banana(18,33.1);banana(33,32.9);
 
 // ---------- tin wall, stage, banner ----------
 const tinLen=59;const tin=box(tinLen,5.6,0.12,M(0xffffff,{map:rep(tinTex,tinLen/1.1,1),metalness:0.25,roughness:0.6}),-23+tinLen/2,2.8,23.1);scene.add(tin);addObs(tin,true);
@@ -656,19 +680,20 @@ for(let x=-22.6;x<36;x+=4.5){const p=box(0.14,5.8,0.14,M(0x23523f),x,2.9,23.2);s
 const stage=new THREE.Mesh(new THREE.BoxGeometry(22,0.6,4.4),[M(0xffffff,{map:rep(brickTex,1,0.3)}),M(0xffffff,{map:rep(brickTex,1,0.3)}),M(0xb06a4f),M(0x8a3b26),M(0xffffff,{map:rep(brickTex,6,0.3)}),M(0x8a3b26)]);
 stage.position.set(0,0.3,20.8);stage.castShadow=stage.receiveShadow=true;scene.add(stage);addPlat(stage);
 const step=box(4,0.3,0.7,M(0xb06a4f),0,0.15,18.25);scene.add(step);addPlat(step);
-const board=box(2.5,2.9,0.08,M(0xfbfaf5),-11.2,3.0,22.98);scene.add(board);
-const bt=new THREE.Mesh(new THREE.PlaneGeometry(2.3,2.7),new THREE.MeshStandardMaterial({map:textTex([{t:' ',size:60},{t:'TRƯỜNG PHỔ THÔNG',size:46,color:'#1f3f8a',weight:600},{t:'DÂN LẬP',size:46,color:'#1f3f8a',weight:600},{t:'NGUYỄN SIÊU',size:70,color:'#c0261a'},{t:' ',size:40}],{w:512,h:600,bg:'#fbfaf5'})}));
-bt.position.set(-11.2,3.0,22.92);bt.rotation.y=Math.PI;scene.add(bt);
+const board=box(3.5,3.6,0.08,M(0xfbfaf5),-11.6,3.1,22.98);scene.add(board);
+const btMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.8});const bt=new THREE.Mesh(new THREE.PlaneGeometry(3.3,3.39),btMat);
+new THREE.TextureLoader().load('img/logo.jpg',t=>{t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=8;btMat.map=t;btMat.needsUpdate=true;});
+bt.position.set(-11.6,3.1,22.92);bt.rotation.y=Math.PI;scene.add(bt);
 const banner=new THREE.Mesh(new THREE.PlaneGeometry(17,2.2),new THREE.MeshStandardMaterial({map:textTex([{t:'LỄ TỔNG KẾT_TUYÊN DƯƠNG KHEN THƯỞNG',size:100},{t:'NĂM HỌC: 1999_2000',size:72}],{w:2048,h:270,color:'#f6f3ea'}),transparent:true}));
 banner.position.set(2.5,4.0,23.0);banner.rotation.y=Math.PI;scene.add(banner);
 for(const x of [-10.2,10.2]){const pot=box(0.6,0.5,0.6,M(0x7b4a2a),x,0.85,22.4);scene.add(pot);const pl=mesh(new THREE.IcosahedronGeometry(0.75,1),M(0x3f7a33,{flatShading:true}));pl.position.set(x,1.7,22.4);scene.add(pl);}
 
 // ---------- gate ----------
-for(const x of [-30.6,-23.4]){const p=box(0.9,3.4,0.9,wallMatS,x,1.7,23.1);scene.add(p);addObs(p);scene.add(box(1.1,0.15,1.1,whiteMat,x,3.45,23.1));}
+for(const x of [-30.6,-23.4]){const p=box(0.9,3.4,0.9,wallMatS,x,1.7,31.6);scene.add(p);addObs(p);scene.add(box(1.1,0.15,1.1,whiteMat,x,3.45,31.6));}
 const gateSign=new THREE.Mesh(new THREE.PlaneGeometry(7.6,0.8),new THREE.MeshStandardMaterial({map:textTex('TRƯỜNG PHỔ THÔNG DÂN LẬP NGUYỄN SIÊU',{w:1536,h:160,bg:'#f7eed6',color:'#b3241a',size:84}),side:THREE.DoubleSide}));
-gateSign.position.set(-27,3.75,23.1);scene.add(gateSign);scene.add(box(7.8,0.12,0.2,M(0x7a2a1c),-27,4.2,23.1));scene.add(box(7.8,0.12,0.2,M(0x7a2a1c),-27,3.3,23.1));
+gateSign.position.set(-27,3.75,31.6);scene.add(gateSign);scene.add(box(7.8,0.12,0.2,M(0x7a2a1c),-27,4.2,31.6));scene.add(box(7.8,0.12,0.2,M(0x7a2a1c),-27,3.3,31.6));
 const gateTex=tex(256,128,(g,w,h)=>{g.clearRect(0,0,w,h);g.fillStyle='#2c4a3a';g.fillRect(0,0,w,8);g.fillRect(0,h-8,w,8);g.fillRect(0,h/2-3,w,6);for(let x=0;x<w;x+=16)g.fillRect(x,0,5,h);});
-for(const [x,s] of [[-30.1,1],[-23.9,-1]]){const lf=new THREE.Mesh(new THREE.PlaneGeometry(3,2),new THREE.MeshStandardMaterial({map:gateTex,alphaTest:0.5,side:THREE.DoubleSide,metalness:0.4}));lf.rotation.y=Math.PI/2;lf.position.set(x+s*0.1,1.1,21.5);lf.castShadow=true;scene.add(lf);}
+for(const [x,s] of [[-30.1,1],[-23.9,-1]]){const lf=new THREE.Mesh(new THREE.PlaneGeometry(3,2),new THREE.MeshStandardMaterial({map:gateTex,alphaTest:0.5,side:THREE.DoubleSide,metalness:0.4}));lf.rotation.y=Math.PI/2;lf.position.set(x+s*0.1,1.1,30.0);lf.castShadow=true;scene.add(lf);}
 
 // ---------- bike shed (nhà xe) ----------
 const shed=new THREE.Group();scene.add(shed);
@@ -722,15 +747,15 @@ tree(-21,-12,'phuong');tree(21,-12,'phuong');tree(-20,9,'phuong');tree(19,7,'ban
 const houseCols=[0xe8d8b0,0xd9b8a0,0xc9d6c0,0xe0c9a8,0xbcc8d4,0xe4e0d0,0xd8a890,0xf0e2b8];
 function house(x,z,w,d,h,face){const mats=[0,1,2,3,4,5].map(i=>i===2?M(0x8a7a6a):M(pick(houseCols),{map:rep(houseTex,Math.max(1,Math.round(w/4)),h/9)}));const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mats);m.position.set(x,h/2,z);m.castShadow=m.receiveShadow=true;scene.add(m);
   if(Math.random()<0.5){const t=box(1.2,1,1.2,M(0x9aa4aa,{metalness:0.5}),x+rand(-w/3,w/3),h+0.5,z);scene.add(t);}}
-for(let x=-70;x<70;){const w=rand(3.6,5.5);house(x+w/2,40,w,8,rand(7,17));x+=w+0.1;}
+for(let x=-70;x<70;){const w=rand(3.6,5.5);house(x+w/2,49.6,w,8,rand(7,17));x+=w+0.1;}
 for(let x=-60;x<60;){const w=rand(4,6);house(x+w/2,-37,w,8,rand(8,20));x+=w+0.2;}
 for(let z=-30;z<22;){const d=rand(4,6);house(-47,z+d/2,8,d,rand(7,16));house(47,z+d/2,8,d,rand(7,16));z+=d+0.2;}
 // electric poles and tangled wires
-const poleTops=[];for(const x of [-34,-14,6,26,44]){const p=box(0.28,8.5,0.28,M(0xb8b4aa),x,4.25,25.3);scene.add(p);if(Math.abs(x)<39)obsRect(x-0.2,x+0.2,25.1,25.5);
-  for(const y of [7.2,7.8])scene.add(box(1.4,0.1,0.1,M(0x8a8a80),x,y,25.3));poleTops.push(x);
-  const coil=mesh(new THREE.TorusGeometry(0.35,0.08,6,14),M(0x1a1a1a));coil.position.set(x+0.3,6.6,25.3);scene.add(coil);}
+const poleTops=[];for(const x of [-34,-14,6,26,44]){const p=box(0.28,8.5,0.28,M(0xb8b4aa),x,4.25,33.7);scene.add(p);if(Math.abs(x)<39)obsRect(x-0.2,x+0.2,33.5,33.9);
+  for(const y of [7.2,7.8])scene.add(box(1.4,0.1,0.1,M(0x8a8a80),x,y,33.7));poleTops.push(x);
+  const coil=mesh(new THREE.TorusGeometry(0.35,0.08,6,14),M(0x1a1a1a));coil.position.set(x+0.3,6.6,33.7);scene.add(coil);}
 const wireMat=new THREE.LineBasicMaterial({color:0x1a1a1a});
-for(let i=0;i<poleTops.length-1;i++)for(let k=0;k<5;k++){const a=new V3(poleTops[i]+rand(-0.6,0.6),7.2+rand(0,0.7),25.3),b=new V3(poleTops[i+1]+rand(-0.6,0.6),7.2+rand(0,0.7),25.3);const mid=a.clone().lerp(b,0.5);mid.y-=rand(0.6,1.6);mid.z+=rand(-0.3,0.3);
+for(let i=0;i<poleTops.length-1;i++)for(let k=0;k<5;k++){const a=new V3(poleTops[i]+rand(-0.6,0.6),7.2+rand(0,0.7),33.7),b=new V3(poleTops[i+1]+rand(-0.6,0.6),7.2+rand(0,0.7),33.7);const mid=a.clone().lerp(b,0.5);mid.y-=rand(0.6,1.6);mid.z+=rand(-0.3,0.3);
   const c=new THREE.QuadraticBezierCurve3(a,mid,b);scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(c.getPoints(20)),wireMat));}
 
 // ---------- people ----------
@@ -1025,7 +1050,7 @@ function startGame(){
   const nm=($('#fName').value.trim()||'Khách').slice(0,28);const nk=$('#fNk').value;const cls=$('#fClass').value+' · '+nk.replace(/^(\d\d)(\d\d)–(\d\d)(\d\d)$/,'$2–$4');ME={name:nm,cls,outfit,female};
   try{localStorage.setItem('ns_profile',JSON.stringify({name:nm,cls:$('#fClass').value,nk,outfit:$('#fOutfit').value,female}));}catch(e){}
   const p=makePerson({female,outfit,skin:SKINS[0],longHair:true,tie:!female&&outfit!=='khoac'?0xb3241a:0});
-  player={...p,pos:p.root.position,vy:0,yaw:Math.PI,phase:0,air:false,bob:0,crouch:0};player.pos.set(-27,0,30);p.root.add(nameSprite(nm));scene.add(p.root);
+  player={...p,pos:p.root.position,vy:0,yaw:Math.PI,phase:0,air:false,bob:0,crouch:0};player.pos.set(-27,0,37.5);p.root.add(nameSprite(nm));scene.add(p.root);
   cam.yaw=0;cam.pitch=0.05;$('#myCls').textContent=$('#fClass').value;
   $('#start').style.display='none';$('#hud').style.display='block';if(isTouch)$('#mobile').style.display='block';
   initAudio();startMusic();renderChat();renderCountdown();setTimeout(()=>{const t=countdownText($('#fNk').value);if(t)feed(t.replace('⏳ ','⏳ '),'net');},6500);lock();if(isTouch){try{history.pushState({nsguard:1},'');}catch(e){}}setTimeout(()=>showZone('ĐƯỜNG ĐÊ LA THÀNH','Mùa hè năm 2000 · trước cổng trường'),300);zoneCur='ĐƯỜNG ĐÊ LA THÀNH';
@@ -1098,7 +1123,7 @@ function lookTarget(){camera.getWorldDirection(fwdV);const eye=camera.position;c
 function doInteract(){if(current&&current.act)current.act();}
 // ---------- zones ----------
 let zoneCur='',zoneCand='',zoneT=0;
-function zoneAt(x,z){if(z>23.3)return['ĐƯỜNG ĐÊ LA THÀNH','Ngoài cổng trường'];if(Math.abs(x)<11&&z>18.2)return['SÂN KHẤU','Nơi làm lễ tổng kết, tuyên dương khen thưởng'];
+function zoneAt(x,z){if(z>31.4)return['ĐƯỜNG ĐÊ LA THÀNH','Ngoài cổng trường'];if(z>23.2&&x<-22)return['LỐI VÀO','Từ cổng vào sân trường'];if(Math.abs(x)<11&&z>18.2)return['SÂN KHẤU','Nơi làm lễ tổng kết, tuyên dương khen thưởng'];
   if(x>23&&z>16)return['NHÀ XE','Chỗ gửi xe đạp'];if(Math.hypot(x-FLAG.x,z-FLAG.z)<3)return['CỘT CỜ','Sáng thứ Hai chào cờ'];if(z<-19.8)return['DÃY NHÀ CHÍNH','Hành lang khối 10 · 11 · 12'];
   if(x<-29.8)return['DÃY NHÀ TRÁI','Phòng hiệu bộ · thư viện · phòng thí nghiệm'];if(x>29.8)return['DÃY NHÀ PHẢI','Khối 8 · khối 9'];return['SÂN TRƯỜNG','Trường Phổ thông Dân lập Nguyễn Siêu'];}
 function updateZone(dt){const [t,sub]=zoneAt(player.pos.x,player.pos.z);if(t===zoneCur){zoneCand='';return;}if(t!==zoneCand){zoneCand=t;zoneT=0;}zoneT+=dt;if(zoneT>0.7){zoneCur=t;zoneCand='';showZone(t,sub);}}
@@ -1156,9 +1181,9 @@ function drawCompass(){const W=420,H=38,ppd=W/160;const hd=((-cam.yaw*180/Math.P
 
 // ---------- map ----------
 const mctx=$('#map').getContext('2d');
-function drawMap(){const W=640,H=520,sx=x=>(x+42)/84*W,sz=z=>(z+32)/68*H;mctx.fillStyle='#101814';mctx.fillRect(0,0,W,H);
+function drawMap(){const W=640,H=520,sx=x=>(x+42)/84*W,sz=z=>(z+32)/78*H;mctx.fillStyle='#101814';mctx.fillRect(0,0,W,H);
   mctx.strokeStyle='rgba(255,176,46,.08)';for(let x=0;x<W;x+=20){mctx.beginPath();mctx.moveTo(x,0);mctx.lineTo(x,H);mctx.stroke();}for(let y=0;y<H;y+=20){mctx.beginPath();mctx.moveTo(0,y);mctx.lineTo(W,y);mctx.stroke();}
-  mctx.fillStyle='#29362e';mctx.fillRect(sx(-30),sz(-20),sx(30)-sx(-30),sz(23)-sz(-20));mctx.fillStyle='#3a3a38';mctx.fillRect(0,sz(25),W,sz(34)-sz(25));
+  mctx.fillStyle='#29362e';mctx.fillRect(sx(-30),sz(-20),sx(30)-sx(-30),sz(23)-sz(-20));mctx.fillStyle='#3a3a38';mctx.fillRect(0,sz(34),W,sz(43)-sz(34));
   mctx.fillStyle='#e6bc55';for(const o of obstacles){const w=sx(o.maxX)-sx(o.minX),h=sz(o.maxZ)-sz(o.minZ);if(w*h>6)mctx.fillRect(sx(o.minX),sz(o.minZ),w,h);}
   mctx.fillStyle='#2f7d60';mctx.fillRect(sx(-23),sz(23)-2,sx(36)-sx(-23),4);mctx.fillStyle='#b06a4f';mctx.fillRect(sx(-11),sz(18.6),sx(11)-sx(-11),sz(23)-sz(18.6));
   mctx.fillStyle='#da251d';mctx.beginPath();mctx.arc(sx(FLAG.x),sz(FLAG.z),5,0,7);mctx.fill();
@@ -1166,11 +1191,11 @@ function drawMap(){const W=640,H=520,sx=x=>(x+42)/84*W,sz=z=>(z+32)/68*H;mctx.fi
   mctx.fillStyle='rgba(255,243,220,.45)';for(const n of npcs)if(n.root.visible)mctx.fillRect(sx(n.pos.x)-1.5,sz(n.pos.z)-1.5,3,3);
   for(const r of remotes.values()){mctx.fillStyle='#7fb2ff';mctx.beginPath();mctx.arc(sx(r.pos.x),sz(r.pos.z),4,0,7);mctx.fill();mctx.font="12px 'Be Vietnam Pro'";mctx.fillText(r.name,sx(r.pos.x)+6,sz(r.pos.z)-6);}
   if(player){mctx.save();mctx.translate(sx(player.pos.x),sz(player.pos.z));mctx.rotate(-cam.yaw);mctx.fillStyle='#fff3dc';mctx.beginPath();mctx.moveTo(0,-9);mctx.lineTo(6,6);mctx.lineTo(0,3);mctx.lineTo(-6,6);mctx.closePath();mctx.fill();mctx.restore();}
-  mctx.fillStyle='#fff3dc';mctx.font="600 13px 'Chakra Petch'";mctx.fillText('ĐƯỜNG ĐÊ LA THÀNH',14,sz(30));mctx.fillText('CỔNG',sx(-29.5),sz(21.5));mctx.fillText('SÂN KHẤU',sx(-4),sz(21));mctx.fillText('DÃY NHÀ CHÍNH',sx(-6),sz(-25));mctx.fillText('NHÀ XE',sx(24),sz(20.5));}
+  mctx.fillStyle='#fff3dc';mctx.font="600 13px 'Chakra Petch'";mctx.fillText('ĐƯỜNG ĐÊ LA THÀNH',14,sz(39.5));mctx.fillText('CỔNG',sx(-30.5),sz(33.6));mctx.fillStyle='#14191a';mctx.fillText('NHÀ 4 TẦNG',sx(4),sz(28));mctx.fillStyle='#fff3dc';mctx.fillText('SÂN KHẤU',sx(-4),sz(21));mctx.fillText('DÃY NHÀ CHÍNH',sx(-6),sz(-25));mctx.fillText('NHÀ XE',sx(24),sz(20.5));}
 
 // ---------- ảnh check-in ----------
 let shotWith=[];let photoOpen=false,inviteOpen=false,photoMode='selfie',photoURL='',photoBlob=null;
-const ZONE_SHORT={'ĐƯỜNG ĐÊ LA THÀNH':'Trước cổng trường','SÂN KHẤU':'Sân khấu lễ tổng kết','NHÀ XE':'Nhà xe','CỘT CỜ':'Cột cờ','DÃY NHÀ CHÍNH':'Hành lang dãy nhà chính','DÃY NHÀ TRÁI':'Dãy nhà trái','DÃY NHÀ PHẢI':'Dãy nhà phải','SÂN TRƯỜNG':'Sân trường'};
+const ZONE_SHORT={'ĐƯỜNG ĐÊ LA THÀNH':'Trước cổng trường','SÂN KHẤU':'Sân khấu lễ tổng kết','NHÀ XE':'Nhà xe','CỘT CỜ':'Cột cờ','DÃY NHÀ CHÍNH':'Hành lang dãy nhà chính','DÃY NHÀ TRÁI':'Dãy nhà trái','DÃY NHÀ PHẢI':'Dãy nhà phải','SÂN TRƯỜNG':'Sân trường','LỐI VÀO':'Lối vào trường'};
 function shotFrom(mode){const saved={p:camera.position.clone(),q:camera.quaternion.clone(),vis:player.root.visible,fov:camera.fov,asp:camera.aspect};
   shotWith=[];if(mode==='selfie'){const near=[...remotes.values()].filter(r=>r.root.visible&&r.pos.distanceTo(player.pos)<5);shotWith=near.map(r=>r.name);
     const pts=[player.pos,...near.map(r=>r.pos)];const ctr=new V3();pts.forEach(q=>ctr.add(q));ctr.divideScalar(pts.length);let spread=0;pts.forEach(q=>{spread=Math.max(spread,Math.hypot(q.x-ctr.x,q.z-ctr.z));});
@@ -1257,7 +1282,7 @@ async function loadFootprints(first){if(!sb)return;try{const since=Date.now()-30
   if(first&&n>0)setTimeout(()=>feed(`👣 ${n} bạn cũ đã ghé trường 30 ngày qua · tìm dấu chân của họ!`,'ok'),4000);}catch(e){}}
 function saveFootprint(force){if(!sb||!player||!ME)return;const now=Date.now();if(!force&&now-fpLastSave<20000)return;
   const p=player.pos;if(!force&&fpLastPos&&fpLastPos.distanceTo(p)<1.5)return;
-  if(p.z>33||Math.abs(p.x)>45)return;fpLastSave=now;fpLastPos=p.clone();
+  if(p.z>42||Math.abs(p.x)>45)return;fpLastSave=now;fpLastPos=p.clone();
   sb.from('footprints').upsert({id:myId,name:ME.name,cls:ME.cls,x:+p.x.toFixed(2),z:+p.z.toFixed(2),ry:+cam.yaw.toFixed(2),t:now}).then(()=>{},()=>{});}
 addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')saveFootprint(true);});
 addEventListener('pagehide',()=>saveFootprint(true));
