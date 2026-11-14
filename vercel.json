@@ -1,1 +1,4 @@
-{ "headers": [ { "source": "/config.js", "headers": [ { "key": "Cache-Control", "value": "no-cache" } ] } ] }
+{
+  "headers": [ { "source": "/config.js", "headers": [ { "key": "Cache-Control", "value": "no-cache" } ] } ],
+  "crons": [ { "path": "/api/keepalive", "schedule": "17 3 * * *" } ]
+}
